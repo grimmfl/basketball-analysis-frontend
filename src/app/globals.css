@@ -11,6 +11,8 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --rt-color-white: #fff;
+    --rt-color-dark: #0a0a0a;
   }
 }
 
@@ -18,10 +20,86 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.webkit-none {
+  -webkit-appearance: none;
+}
+
+.h-table {
+  height: 80%;
+  max-height: 80%;
+}
+
+.h-filter {
+  height: 70%;
+}
+
+.position-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  bottom: 0;
+}
+
+.container{
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.table-scroll{
+  /*width:100%; */
+  display: block;
+  empty-cells: show;
+
+  /* Decoration */
+  border-spacing: 0;
+  border: 1px solid;
+}
+
+.table-scroll thead{
+  position:relative;
+  display: block;
+  width:100%;
+  overflow-y: scroll;
+}
+
+.table-scroll tbody{
+  /* Position */
+  display: block; position:relative;
+  width:100%; overflow-y:scroll;
+  /* Decoration */
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.table-scroll tr{
+  width: 100%;
+  display:flex;
+}
+
+.table-scroll td,.table-scroll th{
+  flex-basis:100%;
+  flex-grow:2;
+  display: block;
+  padding: 1rem;
+  text-align:left;
+}
+
+.table-scroll tbody tr:nth-child(2n){
+  background-color: rgba(130,130,170,0.1);
+}
+
+.body-half-screen{
+  max-height: 50vh;
+}
+
+.bg-highlight {
+  background-color: #12aaff;
 }

@@ -1,26 +1,41 @@
-export default async function Team() {
-    const response = await fetch(`${process.env.BACKEND_URL!}/teams`);
+'use client'
 
-    const teams = await response.json();
+import {Team} from "@/app/models";
+import {OrderDir} from "@/app/fixed-models";
+import {useRouter} from "next/navigation";
+import Table, {ColumnAlignment, TableConfig} from "@/app/ui/table";
+
+export default function TeamsPage() {
+    const router = useRouter();
+
+    const config: TableConfig<Team> = {
+        columns: [
+            {name: "Name", column: "name", alignment: ColumnAlignment.Left, sortable: true},
+            {name: "City", column: "city", alignment: ColumnAlignment.Left, sortable: true},
+        ],
+        searchFn: (request) => fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/teams/search`, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }),
+        initialSearchRequest: {
+            order_by: "name",
+            order_dir: OrderDir.Asc,
+            filter: []
+        },
+        onRowClick: (entry) => {
+            router.push(`/teams/${entry.id}`)
+        },
+        showSearch: true,
+        tableName: Team.name,
+        showFilter: false
+    };
 
     return (
         <div>
-            <table className="w-max min-w-full p-5">
-                <thead>
-                <tr className="text-left">
-                    <th className="p-3">Name</th>
-                    <th className="p-3">City</th>
-                </tr>
-                </thead>
-                <tbody>
-                {teams.map((t: any) =>
-                    <tr key={t.id} className="border-b border-b-gray-900">
-                        <td className="p-3">{t.name}</td>
-                        <td className="p-3">{t.city}</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+            <Table config={config}></Table>
         </div>
     );
 }
