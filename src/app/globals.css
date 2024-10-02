@@ -49,12 +49,12 @@ body {
   bottom: 0;
 }
 
-.container{
+.container {
   padding: 1rem;
   margin: 1rem;
 }
 
-.table-scroll{
+.table-scroll {
   /*width:100%; */
   display: block;
   empty-cells: show;
@@ -64,39 +64,42 @@ body {
   border: 1px solid;
 }
 
-.table-scroll thead{
-  position:relative;
+.table-scroll thead {
+  position: relative;
   display: block;
-  width:100%;
+  width: 100%;
   overflow-y: scroll;
 }
 
-.table-scroll tbody{
+.table-scroll tbody {
   /* Position */
-  display: block; position:relative;
-  width:100%; overflow-y:scroll;
-  /* Decoration */
-  border-top: 1px solid rgba(0,0,0,0.2);
-}
-
-.table-scroll tr{
+  display: block;
+  position: relative;
   width: 100%;
-  display:flex;
+  overflow-y: scroll;
+  /* Decoration */
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.table-scroll td,.table-scroll th{
-  flex-basis:100%;
-  flex-grow:2;
+.table-scroll tr {
+  width: 100%;
+  display: flex;
+}
+
+.table-scroll td,
+.table-scroll th {
+  flex-basis: 100%;
+  flex-grow: 2;
   display: block;
   padding: 1rem;
-  text-align:left;
+  text-align: left;
 }
 
-.table-scroll tbody tr:nth-child(2n){
-  background-color: rgba(130,130,170,0.1);
+.table-scroll tbody tr:nth-child(2n) {
+  background-color: rgba(130, 130, 170, 0.1);
 }
 
-.body-half-screen{
+.body-half-screen {
   max-height: 50vh;
 }
 

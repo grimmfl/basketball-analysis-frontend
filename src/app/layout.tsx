@@ -28,13 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <Navbar></Navbar>
-      <div className="m-10">
-        <Breadcrumbs></Breadcrumbs>
-        <div className="mt-5">
-          {children}
+        <Navbar></Navbar>
+        <div className="m-10">
+          <Breadcrumbs></Breadcrumbs>
+          <div className="mt-5">{children}</div>
         </div>
-      </div>
       </body>
     </html>
   );
