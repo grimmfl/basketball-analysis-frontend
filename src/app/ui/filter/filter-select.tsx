@@ -2,7 +2,7 @@ import {
   ComparatorOperator,
   Model,
   OrderDir,
-  SearchRequest,
+  SearchRequest
 } from "@/app/fixed-models";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip, TooltipRefProps } from "react-tooltip";
@@ -10,7 +10,7 @@ import { Team } from "@/app/models";
 import Spinner from "@/app/ui/spinner";
 
 export enum FilterSelectModel {
-  Team,
+  Team
 }
 
 interface FilterSelectConfig<T extends Model> {
@@ -25,15 +25,15 @@ const filterSelectConfigs: FilterSelectConfig<any>[] = [
     model: FilterSelectModel.Team,
     searchUrl: "teams/search",
     orderBy: "city",
-    selector: (t: Team) => `${t.city} ${t.name}`,
-  },
+    selector: (t: Team) => `${t.city} ${t.name}`
+  }
 ];
 
 export default function FilterSelect<T extends Model>({
   model,
   onChange,
   disabled,
-  defaultId,
+  defaultId
 }: {
   model: FilterSelectModel;
   onChange: (id: number) => void;
@@ -62,11 +62,11 @@ export default function FilterSelect<T extends Model>({
       [
         {
           attribute: "search",
-          comparator: { operator: ComparatorOperator.Contains, value: search },
-        },
-      ],
+          comparator: { operator: ComparatorOperator.Contains, value: search }
+        }
+      ]
     ],
-    take: -1,
+    take: -1
   };
 
   function search(value: string) {
@@ -76,17 +76,17 @@ export default function FilterSelect<T extends Model>({
       [
         {
           attribute: "search",
-          comparator: { operator: ComparatorOperator.Contains, value: value },
-        },
-      ],
+          comparator: { operator: ComparatorOperator.Contains, value: value }
+        }
+      ]
     ];
 
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/${config!.searchUrl}`, {
       method: "POST",
       body: JSON.stringify(request),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     })
       .then((r) => r.json())
       .then((d: T[]) => {
@@ -134,7 +134,7 @@ export default function FilterSelect<T extends Model>({
         style={{
           backgroundColor: "var(--background)",
           color: "var(--foreground)",
-          padding: 0,
+          padding: 0
         }}
         border="1px solid gray"
         noArrow={true}

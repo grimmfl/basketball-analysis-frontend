@@ -4,7 +4,7 @@ export enum ComparatorOperator {
   IsSet,
   Contains,
   Greater,
-  GreaterEqual,
+  GreaterEqual
 }
 
 export interface SearchComparator {
@@ -19,7 +19,7 @@ export interface SearchFilter {
 
 export enum OrderDir {
   Asc,
-  Desc,
+  Desc
 }
 
 export interface SearchRequest {

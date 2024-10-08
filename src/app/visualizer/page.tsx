@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
+  useState
 } from "react";
 import { Group } from "@visx/group";
 import { scaleLinear } from "@visx/scale";
@@ -13,7 +13,7 @@ import { Point } from "@visx/point";
 import {
   ComparatorOperator,
   OrderDir,
-  SearchRequest,
+  SearchRequest
 } from "@/app/fixed-models";
 import { PlayerSeasonStatline } from "@/app/models";
 import { Tooltip, useTooltip } from "@visx/tooltip";
@@ -27,16 +27,14 @@ import FilterModal, { FilterModalConfig } from "@/app/ui/filter/filter-modal";
 import { Filter } from "@/app/ui/filter/filter-form";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import Spinner from "@/app/ui/spinner";
-import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
+import { Background, Highlight } from "@/app/globals";
 
-const highlight = "#12aaff";
-const background = "#050505";
 const axisColor = "#666";
 
 const tickLabelProps = {
   fill: axisColor,
   fontSize: 12,
-  fontFamily: "sans-serif",
+  fontFamily: "sans-serif"
 };
 
 const tickLineProps = { fill: axisColor, stroke: axisColor };
@@ -57,7 +55,7 @@ function getDomain(points: Point[], selector: (p: Point) => number): number[] {
 
   return [
     Math.floor(min / tickUnit) * tickUnit,
-    Math.ceil(max / tickUnit) * tickUnit,
+    Math.ceil(max / tickUnit) * tickUnit
   ];
 }
 
@@ -87,12 +85,12 @@ export default function Example() {
   const [filters, setFilters] = useState([
     {
       key: "statline.threes_attempted_per_game",
-      comparator: { operator: ComparatorOperator.Greater, value: 3 },
+      comparator: { operator: ComparatorOperator.Greater, value: 3 }
     },
     {
       key: "statline.games_played",
-      comparator: { operator: ComparatorOperator.Greater, value: 40 },
-    },
+      comparator: { operator: ComparatorOperator.Greater, value: 40 }
+    }
   ] as Filter[]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -108,7 +106,7 @@ export default function Example() {
       </button>
     ),
     onClose: () => search(),
-    defaultFilters: filters,
+    defaultFilters: filters
   };
 
   const tooltip = useTooltip<PlayerSeasonStatline>();
@@ -118,7 +116,7 @@ export default function Example() {
     order_by: "statline.points_per_game",
     order_dir: OrderDir.Desc,
     filter: [],
-    take: -1,
+    take: -1
   };
 
   function search(customSeason?: string) {
@@ -132,10 +130,10 @@ export default function Example() {
           attribute: "season",
           comparator: {
             operator: ComparatorOperator.Equal,
-            value: actualSeason,
-          },
-        },
-      ],
+            value: actualSeason
+          }
+        }
+      ]
     ];
 
     fetch(
@@ -144,9 +142,9 @@ export default function Example() {
         method: "POST",
         body: JSON.stringify(searchRequest),
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
+          "Content-Type": "application/json"
+        }
+      }
     )
       .then((r) => r.json())
       .then((d: PlayerSeasonStatline[]) => {
@@ -161,18 +159,18 @@ export default function Example() {
 
   const points = data.map(
     (s) =>
-      new Point({ x: resolveProperty(s, xAxis), y: resolveProperty(s, yAxis) }),
+      new Point({ x: resolveProperty(s, xAxis), y: resolveProperty(s, yAxis) })
   );
 
   const xScale = scaleLinear<number>({
     range: [marginX, maxX],
-    domain: getDomain(points, (p) => p.x),
+    domain: getDomain(points, (p) => p.x)
   });
 
   const yDomain = getDomain(points, (p) => p.y);
   const yScale = scaleLinear<number>({
     range: [marginY, maxY],
-    domain: [yDomain[1], yDomain[0]],
+    domain: [yDomain[1], yDomain[0]]
   });
 
   const voronoiLayout = useMemo(
@@ -181,9 +179,9 @@ export default function Example() {
         x: (d) => xScale(d.x) ?? 0,
         y: (d) => yScale(d.y) ?? 0,
         width,
-        height,
+        height
       })(points),
-    [width, height, xScale, yScale],
+    [width, height, xScale, yScale]
   );
 
   // event handlers
@@ -205,17 +203,17 @@ export default function Example() {
         .map((d) => ({
           data: d,
           x: resolveProperty(d, xAxis),
-          y: resolveProperty(d, yAxis),
+          y: resolveProperty(d, yAxis)
         }))
         .find((d) => d.x === closest.data.x && d.y === closest.data.y);
 
       tooltip.showTooltip({
         tooltipLeft: xScale(closest.data!.x),
         tooltipTop: yScale(closest.data!.y),
-        tooltipData: dataPoint?.data,
+        tooltipData: dataPoint?.data
       });
     },
-    [xScale, yScale, tooltip.showTooltip, voronoiLayout],
+    [xScale, yScale, tooltip.showTooltip, voronoiLayout]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -239,7 +237,7 @@ export default function Example() {
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseLeave}
           >
-            <rect fill={background} width={width} height={height} rx={14} />
+            <rect fill={Background} width={width} height={height} rx={14} />
 
             <Grid
               xScale={xScale}
@@ -275,7 +273,7 @@ export default function Example() {
                   cx={xScale(point.x)}
                   cy={yScale(point.y)}
                   r={4}
-                  fill={highlight}
+                  fill={Highlight}
                 />
               ))}
             </Group>

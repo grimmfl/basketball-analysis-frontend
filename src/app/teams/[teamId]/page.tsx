@@ -30,26 +30,26 @@ export default function () {
               name: "First Name",
               column: "player.first_name",
               alignment: ColumnAlignment.Left,
-              sortable: true,
+              sortable: true
             },
             {
               name: "Last Name",
               column: "player.last_name",
               alignment: ColumnAlignment.Left,
-              sortable: true,
+              sortable: true
             },
             {
               name: "Position",
               column: "position",
               alignment: ColumnAlignment.Left,
-              sortable: true,
+              sortable: true
             },
             {
               name: "Height",
               column: "height",
               alignment: ColumnAlignment.Right,
-              sortable: true,
-            },
+              sortable: true
+            }
           ],
           searchFn: (request) =>
             fetch(
@@ -58,27 +58,27 @@ export default function () {
                 method: "POST",
                 body: JSON.stringify(request),
                 headers: {
-                  "Content-Type": "application/json",
-                },
-              },
+                  "Content-Type": "application/json"
+                }
+              }
             ),
           initialSearchRequest: {
             order_by: "player.last_name",
             order_dir: OrderDir.Asc,
-            filter: [],
+            filter: []
           },
           onRowClick: (entry) => {
             router.push(`/teams/${teamId}/players/${entry.player_id}`);
           },
           showSearch: false,
           tableName: RosterPlayerXref.name,
-          showFilter: false,
+          showFilter: false
         });
       });
   }, []);
 
   const [config, setConfig] = useState(
-    undefined as unknown as TableConfig<RosterPlayerXref>,
+    undefined as unknown as TableConfig<RosterPlayerXref>
   );
 
   return (

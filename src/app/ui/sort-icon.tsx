@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 export default function SortIcon({
   prop,
-  request,
+  request
 }: {
   prop: string;
   request: SearchRequest;

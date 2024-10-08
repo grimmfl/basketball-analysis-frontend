@@ -11,7 +11,7 @@ const items: NavbarItem[] = [
   { name: "Teams", path: "/teams" },
   { name: "Players", path: "/players" },
   { name: "League Leaders", path: "/league-leaders" },
-  { name: "Visualizer", path: "/visualizer" },
+  { name: "Visualizer", path: "/visualizer" }
 ];
 
 export default function Navbar() {

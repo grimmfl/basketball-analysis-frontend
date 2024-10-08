@@ -14,34 +14,34 @@ export default function TeamsPage() {
         name: "Name",
         column: "name",
         alignment: ColumnAlignment.Left,
-        sortable: true,
+        sortable: true
       },
       {
         name: "City",
         column: "city",
         alignment: ColumnAlignment.Left,
-        sortable: true,
-      },
+        sortable: true
+      }
     ],
     searchFn: (request) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/teams/search`, {
         method: "POST",
         body: JSON.stringify(request),
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       }),
     initialSearchRequest: {
       order_by: "name",
       order_dir: OrderDir.Asc,
-      filter: [],
+      filter: []
     },
     onRowClick: (entry) => {
       router.push(`/teams/${entry.id}`);
     },
     showSearch: true,
     tableName: Team.name,
-    showFilter: false,
+    showFilter: false
   };
 
   return (

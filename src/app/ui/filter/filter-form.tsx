@@ -5,6 +5,7 @@ import { ComparatorOperator, SearchComparator } from "@/app/fixed-models";
 import { getProperty, removeDuplicates, zip } from "@/app/utils";
 import { Translations } from "@/app/translations";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
+import { Option } from "@/app/select-options";
 
 export interface FilterConfig {
   onChange: (filters: Filter[]) => void;
@@ -16,6 +17,8 @@ export interface Filter {
   name: string;
   key: string;
   comparator: SearchComparator;
+  isEnum: boolean;
+  options: Option[];
 }
 
 interface FilterGroup {
@@ -24,16 +27,35 @@ interface FilterGroup {
   filters: Filter[];
 }
 
+function resolveEnumFilter(key: string, enum_value: string): Filter {
+  const value = enum_value.replace("__enums__.", "");
+  const translations = getProperty(Translations.__enums__, value);
+  const options = Object.getOwnPropertyNames(translations).filter(
+    (o) => o != "__name__"
+  );
+
+  return {
+    name: getProperty(translations, "__name__"),
+    key: key,
+    comparator: { operator: ComparatorOperator.Equal, value: options[0] },
+    isEnum: true,
+    options: options.map((o) => ({
+      name: getProperty(translations, o),
+      key: o
+    }))
+  };
+}
+
 function resolveFilters(
   properties: string[],
   translations: any,
   prefix: string = "",
-  skipPrefix: number = 0,
+  skipPrefix: number = 0
 ): FilterGroup[] {
   const group: FilterGroup = {
     name: getProperty(translations, "__name__"),
     filters: [],
-    key: prefix,
+    key: prefix
   };
 
   let groups: FilterGroup[] = [group];
@@ -42,11 +64,17 @@ function resolveFilters(
     const value = getProperty(translations, property);
 
     if (typeof value === "string") {
-      group.filters.push({
-        key: prefix + property,
-        name: value,
-        comparator: { operator: ComparatorOperator.Equal, value: 0 },
-      });
+      if (value.startsWith("__enums__")) {
+        group.filters.push(resolveEnumFilter(prefix + property, value));
+      } else {
+        group.filters.push({
+          key: prefix + property,
+          name: value,
+          comparator: { operator: ComparatorOperator.Equal, value: 0 },
+          isEnum: false,
+          options: []
+        });
+      }
     } else {
       let newPrefix = prefix;
       if (skipPrefix <= 0) newPrefix += property + ".";
@@ -54,10 +82,10 @@ function resolveFilters(
       if (value == null) continue;
 
       const subProperties = Object.getOwnPropertyNames(value).filter(
-        (p) => p != "__name__",
+        (p) => p != "__name__"
       );
       groups = groups.concat(
-        resolveFilters(subProperties, value, newPrefix, skipPrefix - 1),
+        resolveFilters(subProperties, value, newPrefix, skipPrefix - 1)
       );
     }
   }
@@ -66,7 +94,7 @@ function resolveFilters(
     groups
       .filter((g) => g.filters.length > 0)
       .sort((a, b) => a.key.length - b.key.length),
-    (i) => i.name,
+    (i) => i.name
   );
 }
 
@@ -85,7 +113,7 @@ function getOperators() {
 
   return zip(nonValueMembers, valueMembers).map((v) => ({
     name: v.item1,
-    value: v.item2,
+    value: v.item2
   }));
 }
 
@@ -110,7 +138,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
 
   const defaultFilters = config.defaultFilters ?? [];
   const defaultGroups = availableFilters.filter((g) =>
-    g.filters.some((f) => defaultFilters.some((df) => f.key === df.key)),
+    g.filters.some((f) => defaultFilters.some((df) => f.key === df.key))
   );
 
   defaultGroups.forEach((g) =>
@@ -120,7 +148,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
       if (defaultFilter == null) return;
 
       f.comparator = defaultFilter.comparator;
-    }),
+    })
   );
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -147,7 +175,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     let thisFilter = filters.find((f) => f.key === filter.key)!;
     newFilters.push({
       ...thisFilter,
-      comparator: { ...thisFilter.comparator, operator: Number(value) },
+      comparator: { ...thisFilter.comparator, operator: Number(value) }
     });
     update(newFilters);
   }
@@ -157,7 +185,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     let thisFilter = filters.find((f) => f.key === filter.key)!;
     newFilters.push({
       ...thisFilter,
-      comparator: { ...thisFilter.comparator, value: value },
+      comparator: { ...thisFilter.comparator, value: value }
     });
     update(newFilters);
   }
@@ -191,14 +219,14 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                   <ChevronUpIcon className="w-4 mr-2"></ChevronUpIcon>
                 </td>
                 <td className="pt-5">{g.name}</td>
-              </tr>,
+              </tr>
             ].concat(
               g.filters.map((f) =>
                 f.key.includes("id") ? (
                   <tr
                     key={g.name + f.key}
                     className={clsx({
-                      "text-gray-500": !filterIsActive(f),
+                      "text-gray-500": !filterIsActive(f)
                     })}
                   >
                     <td>
@@ -227,7 +255,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                   <tr
                     key={g.name + f.key}
                     className={clsx({
-                      "text-gray-500": !filterIsActive(f),
+                      "text-gray-500": !filterIsActive(f)
                     })}
                   >
                     <td>
@@ -254,16 +282,35 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                       </select>
                     </td>
                     <td>
-                      <input
-                        disabled={!filterIsActive(f)}
-                        className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
-                        value={f.comparator.value}
-                        onChange={(evt) => setFilterValue(f, evt.target.value)}
-                      ></input>
+                      {f.isEnum ? (
+                        <select
+                          disabled={!filterIsActive(f)}
+                          className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
+                          defaultValue={f.comparator.value}
+                          onChange={(evt) =>
+                            setFilterValue(f, evt.target.value)
+                          }
+                        >
+                          {f.options.map((o, idx) => (
+                            <option key={o.key} value={o.key}>
+                              {o.name}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          disabled={!filterIsActive(f)}
+                          className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
+                          value={f.comparator.value}
+                          onChange={(evt) =>
+                            setFilterValue(f, evt.target.value)
+                          }
+                        ></input>
+                      )}
                     </td>
                   </tr>
-                ),
-              ),
+                )
+              )
             )
           ) : (
             <tr
@@ -275,7 +322,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
               </td>
               <td className="pt-5">{g.name}</td>
             </tr>
-          ),
+          )
         )}
       </tbody>
     </table>

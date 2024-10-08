@@ -4,7 +4,7 @@ import Table, { ColumnAlignment } from "@/app/ui/table";
 import {
   ComparatorOperator,
   OrderDir,
-  SearchRequest,
+  SearchRequest
 } from "@/app/fixed-models";
 import { useState } from "react";
 import { round } from "@/app/utils";
@@ -24,28 +24,28 @@ export default function () {
           column: "player.first_name",
           name: "First Name",
           alignment: ColumnAlignment.Left,
-          sortable: true,
+          sortable: true
         },
         {
           column: "player.last_name",
           name: "Last Name",
           alignment: ColumnAlignment.Left,
-          sortable: true,
+          sortable: true
         },
         {
           column: option.key,
           name: option.name,
           alignment: ColumnAlignment.Right,
           format: (v: any) => round(v, 2),
-          sortable: true,
-        },
-      ],
+          sortable: true
+        }
+      ]
     });
 
     const searchRequest = {
       ...config.searchRequest$.getValue(),
       order_by: option.key,
-      order_dir: OrderDir.Desc,
+      order_dir: OrderDir.Desc
     };
 
     config.searchRequest$.setValue(searchRequest);
@@ -55,19 +55,19 @@ export default function () {
     const filters = config.searchRequest$
       .getValue()
       .filter.filter(
-        (ors) => ors.find((f) => f.attribute === "season") == null,
+        (ors) => ors.find((f) => f.attribute === "season") == null
       );
 
     filters.push([
       {
         attribute: "season",
-        comparator: { operator: ComparatorOperator.Equal, value: season },
-      },
+        comparator: { operator: ComparatorOperator.Equal, value: season }
+      }
     ]);
 
     const searchRequest = {
       ...config.searchRequest$.getValue(),
-      filter: filters,
+      filter: filters
     };
 
     config.searchRequest$.setValue(searchRequest);
@@ -76,7 +76,7 @@ export default function () {
   function setTake(take: string) {
     const searchRequest = {
       ...config.searchRequest$.getValue(),
-      take: parseInt(take, 10),
+      take: parseInt(take, 10)
     };
 
     config.searchRequest$.setValue(searchRequest);
@@ -91,12 +91,12 @@ export default function () {
           attribute: "season",
           comparator: {
             operator: ComparatorOperator.Equal,
-            value: SeasonOptions[0].key,
-          },
-        },
-      ],
+            value: SeasonOptions[0].key
+          }
+        }
+      ]
     ],
-    take: 10,
+    take: 10
   };
 
   const [config, setConfig] = useState({
@@ -105,21 +105,21 @@ export default function () {
         column: "player.first_name",
         name: "First Name",
         alignment: ColumnAlignment.Left,
-        sortable: false,
+        sortable: false
       },
       {
         column: "player.last_name",
         name: "Last Name",
         alignment: ColumnAlignment.Left,
-        sortable: false,
+        sortable: false
       },
       {
         column: StatOptions[0].key,
         name: StatOptions[0].name,
         alignment: ColumnAlignment.Right,
         format: (v: any) => round(v, 2),
-        sortable: false,
-      },
+        sortable: false
+      }
     ],
     searchFn: (request: SearchRequest) =>
       fetch(
@@ -128,9 +128,9 @@ export default function () {
           method: "POST",
           body: JSON.stringify(request),
           headers: {
-            "Content-Type": "application/json",
-          },
-        },
+            "Content-Type": "application/json"
+          }
+        }
       ),
     initialSearchRequest: initialSearchRequest,
     showSearch: false,
@@ -138,7 +138,7 @@ export default function () {
     tableName: PlayerSeasonStatline.name,
     onRowClick: (entry: PlayerSeasonStatline) =>
       router.push(`/players/${entry.player_id}`),
-    showFilter: true,
+    showFilter: true
   });
 
   const router = useRouter();

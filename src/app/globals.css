@@ -5,6 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --highlight: #12aaff;
+  --secondary: #0d2d54;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,10 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.variables {
+  background: var(--highlight);
 }
 
 .webkit-none {
@@ -104,5 +110,23 @@ body {
 }
 
 .bg-highlight {
-  background-color: #12aaff;
+  background-color: var(--highlight);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 300px; /* Full width (cover the whole page) */
+  height: 300px; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 1); /* Black background with opacity */
+  z-index: 0; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
 }

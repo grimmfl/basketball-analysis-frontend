@@ -1,4 +1,42 @@
 export const Translations = {
+  __enums__: {
+    Origin: {
+      NBA: "NBA",
+      __name__: "Origin"
+    },
+    ShotType: {
+      TWO_POINTER: "2PT",
+      THREE_POINTER: "3PT",
+      __name__: "Shot Type"
+    },
+    ShotZoneBasic: {
+      RESTRICTED_AREA: "Restricted area",
+      IN_THE_PAINT: "In the paint (Non RA)",
+      ABOVE_THE_BREAK: "Above the break 3PT",
+      MID_RANGE: "Mid range",
+      LEFT_CORNER: "Left corner 3PT",
+      RIGHT_CORNER: "Right corner 3PT",
+      BACK_COURT: "Back court",
+      __name__: "Shot Zone"
+    },
+    ShotZoneArea: {
+      CENTER: "Center",
+      RIGHT_SIDE_CENTER: "Right Side Center",
+      LEFT_SIDE_CENTER: "Left Side Center",
+      RIGHT_SIDE: "Right Side",
+      LEFT_SIDE: "Left Side",
+      BACK_COURT: "Back Court",
+      __name__: "Shot Area"
+    },
+    ShotZoneRange: {
+      LESS_THAN_8FT: "Less than 8 ft",
+      MORE_THAN_24FT: "More than 24 ft",
+      BETWEEN_8FT_16FT: "8 ft to 16 ft",
+      BETWEEN_16FT_24FT: "16 ft to 24 ft",
+      BACK_COURT: "Back cort",
+      __name__: "Shot Range"
+    }
+  },
   Statline: {
     id: "ID",
     points: "Total PTS",
@@ -25,7 +63,8 @@ export const Translations = {
     fgs_attempted_per_game: "FGA",
     fgs_made_per_game: "FGM",
     threes_attempted_per_game: "3PA",
-    fts_attempted_per_game: "3PM",
+    threes_made_per_game: "3PM",
+    fts_attempted_per_game: "FTA",
     fts_made_per_game: "FTA",
     turnovers_per_game: "FTM",
     offensive_rebounds_per_game: "OREB",
@@ -34,7 +73,8 @@ export const Translations = {
     fg_pct: "FG %",
     threes_pct: "3P %",
     ft_pct: "FT %",
-    __name__: "Statline",
+    statline_opponent_id: "Opponent Statline",
+    __name__: "Statline"
   },
   Player: {
     first_name: "First Name",
@@ -53,13 +93,13 @@ export const Translations = {
           id: "Team",
           name: "Name",
           city: "City",
-          __name__: "Team",
+          __name__: "Team"
         },
-        __name__: "Roster",
+        __name__: "Roster"
       },
-      __name__: "Current Roster Player",
+      __name__: "Current Roster Player"
     },
-    __name__: "Player",
+    __name__: "Player"
   },
   Game: {
     season: "Season",
@@ -73,7 +113,7 @@ export const Translations = {
       id: "Team",
       name: "Name",
       city: "City",
-      __name__: "Team",
+      __name__: "Team"
     },
     statline_team1: {
       id: "ID",
@@ -101,7 +141,8 @@ export const Translations = {
       fgs_attempted_per_game: "FGA",
       fgs_made_per_game: "FGM",
       threes_attempted_per_game: "3PA",
-      fts_attempted_per_game: "3PM",
+      threes_made_per_game: "3PM",
+      fts_attempted_per_game: "FTA",
       fts_made_per_game: "FTA",
       turnovers_per_game: "FTM",
       offensive_rebounds_per_game: "OREB",
@@ -110,7 +151,8 @@ export const Translations = {
       fg_pct: "FG %",
       threes_pct: "3P %",
       ft_pct: "FT %",
-      __name__: "Statline",
+      statline_opponent_id: "Opponent Statline",
+      __name__: "Statline"
     },
     statline_team2: {
       id: "ID",
@@ -138,7 +180,8 @@ export const Translations = {
       fgs_attempted_per_game: "FGA",
       fgs_made_per_game: "FGM",
       threes_attempted_per_game: "3PA",
-      fts_attempted_per_game: "3PM",
+      threes_made_per_game: "3PM",
+      fts_attempted_per_game: "FTA",
       fts_made_per_game: "FTA",
       turnovers_per_game: "FTM",
       offensive_rebounds_per_game: "OREB",
@@ -147,15 +190,16 @@ export const Translations = {
       fg_pct: "FG %",
       threes_pct: "3P %",
       ft_pct: "FT %",
-      __name__: "Statline",
+      statline_opponent_id: "Opponent Statline",
+      __name__: "Statline"
     },
     winner_team: {
       id: "Team",
       name: "Name",
       city: "City",
-      __name__: "Team",
+      __name__: "Team"
     },
-    __name__: "Game",
+    __name__: "Game"
   },
   PlayerSeasonStatline: {
     season: "Season",
@@ -176,13 +220,13 @@ export const Translations = {
             id: "Team",
             name: "Name",
             city: "City",
-            __name__: "Team",
+            __name__: "Team"
           },
-          __name__: "Roster",
+          __name__: "Roster"
         },
-        __name__: "Current Roster Player",
+        __name__: "Current Roster Player"
       },
-      __name__: "Player",
+      __name__: "Player"
     },
     statline: {
       id: "ID",
@@ -210,7 +254,8 @@ export const Translations = {
       fgs_attempted_per_game: "FGA",
       fgs_made_per_game: "FGM",
       threes_attempted_per_game: "3PA",
-      fts_attempted_per_game: "3PM",
+      threes_made_per_game: "3PM",
+      fts_attempted_per_game: "FTA",
       fts_made_per_game: "FTA",
       turnovers_per_game: "FTM",
       offensive_rebounds_per_game: "OREB",
@@ -219,15 +264,16 @@ export const Translations = {
       fg_pct: "FG %",
       threes_pct: "3P %",
       ft_pct: "FT %",
-      __name__: "Statline",
+      statline_opponent_id: "Opponent Statline",
+      __name__: "Statline"
     },
     team: {
       id: "Team",
       name: "Name",
       city: "City",
-      __name__: "Team",
+      __name__: "Team"
     },
-    __name__: "Player Season Statline",
+    __name__: "Player Season Statline"
   },
   Roster: {
     team_id: "Team",
@@ -236,9 +282,9 @@ export const Translations = {
       id: "Team",
       name: "Name",
       city: "City",
-      __name__: "Team",
+      __name__: "Team"
     },
-    __name__: "Roster",
+    __name__: "Roster"
   },
   RosterPlayerXref: {
     roster_id: "Roster",
@@ -265,21 +311,21 @@ export const Translations = {
             id: "Team",
             name: "Name",
             city: "City",
-            __name__: "Team",
+            __name__: "Team"
           },
-          __name__: "Roster",
+          __name__: "Roster"
         },
-        __name__: "Current Roster Player",
+        __name__: "Current Roster Player"
       },
-      __name__: "Player",
+      __name__: "Player"
     },
-    __name__: "Roster Player",
+    __name__: "Roster Player"
   },
   Team: {
     id: "Team",
     name: "Name",
     city: "City",
-    __name__: "Team",
+    __name__: "Team"
   },
   CurrentRosterPlayer: {
     player_id: "ID Player",
@@ -295,10 +341,23 @@ export const Translations = {
         id: "Team",
         name: "Name",
         city: "City",
-        __name__: "Team",
+        __name__: "Team"
       },
-      __name__: "Roster",
+      __name__: "Roster"
     },
-    __name__: "Current Roster Player",
+    __name__: "Current Roster Player"
   },
+  Shot: {
+    period: "Period",
+    minutes_remaining: "Minutes Remaining",
+    seconds_remaining: "Seconds Remaining",
+    shot_type: "__enums__.ShotType",
+    shot_zone_basic: "__enums__.ShotZoneBasic",
+    shot_zone_area: "__enums__.ShotZoneArea",
+    shot_zone_range: "__enums__.ShotZoneRange",
+    shot_distance: "Shot Distance",
+    shot_attempted: "Shot Attempted",
+    shot_made: "Shot Made",
+    __name__: "Shot"
+  }
 };

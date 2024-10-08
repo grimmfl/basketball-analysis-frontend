@@ -2,7 +2,7 @@ import React, {
   cloneElement,
   createElement,
   ReactElement,
-  useState,
+  useState
 } from "react";
 import Modal from "react-modal";
 import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
@@ -18,7 +18,7 @@ const customStyles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.75)",
+    backgroundColor: "rgba(0, 0, 0, 0.75)"
   },
   content: {
     top: "50%",
@@ -30,8 +30,8 @@ const customStyles = {
     height: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "rgb(0, 0, 0)",
-    border: "1px solid rgb(50, 50, 50)",
-  },
+    border: "1px solid rgb(50, 50, 50)"
+  }
 };
 
 export default function FilterModal({ config }: { config: FilterModalConfig }) {
@@ -47,7 +47,7 @@ export default function FilterModal({ config }: { config: FilterModalConfig }) {
       setFilters(f);
       config.onChange(f);
     },
-    defaultFilters: actualFilters,
+    defaultFilters: actualFilters
   };
 
   console.log(actualFilters);
@@ -67,10 +67,10 @@ export default function FilterModal({ config }: { config: FilterModalConfig }) {
               createElement("div", {
                 className:
                   "absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-highlight border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900",
-                children: actualFilters.length,
-              }),
-            ],
-    }),
+                children: actualFilters.length
+              })
+            ]
+    })
   });
 
   return (

@@ -2,27 +2,19 @@ import SortIcon from "@/app/ui/sort-icon";
 import {
   ComparatorOperator,
   OrderDir,
-  SearchComparator,
-  SearchRequest,
+  SearchRequest
 } from "@/app/fixed-models";
 import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Observable } from "@/app/observable";
-import { Translations } from "@/app/translations";
-import {
-  getProperty,
-  removeDuplicates,
-  resolveProperty,
-  zip,
-} from "@/app/utils";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
+import { resolveProperty } from "@/app/utils";
 import Spinner from "@/app/ui/spinner";
 import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
 
 export enum ColumnAlignment {
   Left,
   Right,
-  Center,
+  Center
 }
 
 export interface TableColumn<T> {
@@ -49,7 +41,7 @@ export interface TableConfig<T> {
 export default function Table<T>({ config }: { config: TableConfig<T> }) {
   const filterConfig: FilterConfig = {
     tableName: config.tableName,
-    onChange: (f) => setFilters(f),
+    onChange: (f) => setFilters(f)
   };
 
   function updateSearchRequest(request: SearchRequest, prop: string) {
@@ -57,13 +49,13 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       return {
         ...request,
         order_dir:
-          request.order_dir === OrderDir.Asc ? OrderDir.Desc : OrderDir.Asc,
+          request.order_dir === OrderDir.Asc ? OrderDir.Desc : OrderDir.Asc
       };
     } else {
       return {
         ...request,
         order_by: prop,
-        order_dir: OrderDir.Asc,
+        order_dir: OrderDir.Asc
       };
     }
   }
@@ -76,7 +68,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
     newFilter.push({
       name: "search",
       key: "search",
-      comparator: { operator: ComparatorOperator.Contains, value: value },
+      comparator: { operator: ComparatorOperator.Contains, value: value }
     });
 
     setFilters(newFilter);
@@ -94,7 +86,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
   function search(
     request: SearchRequest,
     custom_external_filters?: Filter[],
-    custom_filters?: Filter[],
+    custom_filters?: Filter[]
   ) {
     const ext = custom_external_filters ?? externalFilters;
     const int = custom_filters ?? filters;
@@ -104,7 +96,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
         ...request,
         filter: ext
           .concat(int)
-          .map((f) => [{ attribute: f.key, comparator: f.comparator }]),
+          .map((f) => [{ attribute: f.key, comparator: f.comparator }])
       };
 
     setIsLoading(true);
@@ -156,7 +148,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       const external = r.filter.map((f) => ({
         key: f[0].attribute,
         name: "",
-        comparator: f[0].comparator,
+        comparator: f[0].comparator
       }));
       setExternalFilters(external);
       search(r, external);
@@ -166,7 +158,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
   const [data, setData] = useState([] as T[]);
 
   const [searchRequest, setSearchRequest] = useState(
-    config.initialSearchRequest,
+    config.initialSearchRequest
   );
 
   const [externalFilters, setExternalFilters] = useState([] as Filter[]);
@@ -184,8 +176,8 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       config.initialSearchRequest.filter.map((f) => ({
         key: f[0].attribute,
         name: "",
-        comparator: f[0].comparator,
-      })),
+        comparator: f[0].comparator
+      }))
     );
   }, []);
 
@@ -206,7 +198,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
         <div className="max-h-screen w-full mr-2">
           <div className="h-full h-table overflow-y-auto">
             <table className="min-w-full" id="table" ref={tableRef}>
-              <thead className="position-sticky bg-blue-950 border-b-4 border-b-gray-900">
+              <thead className="position-sticky bg-secondary border-b-4 border-b-gray-900">
                 <tr className="text-left border-b-4 border-b-gray-900">
                   {config.columns?.map((c, idx) => (
                     <th
@@ -214,7 +206,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
                       className={
                         c.headerClassName ??
                         clsx("p-3 w-auto", {
-                          "hover:cursor-pointer": c.sortable,
+                          "hover:cursor-pointer": c.sortable
                         })
                       }
                       onClick={() => (c.sortable ? sort(c.column) : {})}
@@ -243,7 +235,7 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
                       key={idx}
                       className={clsx("border-b border-b-gray-900", {
                         "hover:cursor-pointer hover:bg-gray-900":
-                          config.onRowClick != null,
+                          config.onRowClick != null
                       })}
                       onClick={() =>
                         config.onRowClick != null

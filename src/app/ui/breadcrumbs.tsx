@@ -7,14 +7,17 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 export function prettifyName(name: string) {
   name = name.substring(0, 1)!.toUpperCase() + name.substring(1, name.length);
 
-  name = name.split("_").join(" ");
+  name = name
+    .split("_")
+    .map((n) => n.substring(0, 1)!.toUpperCase() + n.substring(1, name.length))
+    .join(" ");
 
   return name;
 }
 
 async function getTeamName(id: string): Promise<string> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/teams/${id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/teams/${id}`
   );
 
   const team: Team = await response.json();
@@ -24,7 +27,7 @@ async function getTeamName(id: string): Promise<string> {
 
 async function getPlayerName(id: string): Promise<string> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/players/${id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/players/${id}`
   );
 
   const player: Player = await response.json();
@@ -54,13 +57,19 @@ const PATHS: Path[] = [
               {
                 path: "{player_id}",
                 resolve: async (id: string) => await getPlayerName(id),
-                children: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+                children: [
+                  {
+                    path: "shot-chart",
+                    resolve: async (_: string) => "shot_chart",
+                    children: []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     path: "players",
@@ -69,16 +78,25 @@ const PATHS: Path[] = [
       {
         path: "{player_id}",
         resolve: async (id: string) => await getPlayerName(id),
-        children: [],
-      },
-    ],
+        children: [
+          {
+            path: "shot-chart",
+            resolve: async (_: string) => "shot_chart",
+            children: []
+          }
+        ]
+      }
+    ]
   },
+  {
+    path: "league-leaders",
+    resolve: async (_: string) => "league_leaders",
+    children: []
+  }
 ];
 
 async function parse_path(paths: Path[], crumbs: string[]): Promise<string[]> {
   if (crumbs.length == 0) return [];
-
-  console.log(crumbs);
 
   const crumb = crumbs[0];
 
