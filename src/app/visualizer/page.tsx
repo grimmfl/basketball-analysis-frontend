@@ -149,7 +149,6 @@ export default function Example() {
       .then((r) => r.json())
       .then((d: PlayerSeasonTeamStatline[]) => {
         setData(d);
-        console.log(d);
         setIsLoading(false);
       });
   }

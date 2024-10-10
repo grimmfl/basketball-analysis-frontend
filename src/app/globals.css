@@ -52,6 +52,10 @@ body {
   height: 25rem;
 }
 
+.h-team-table {
+  height: 45rem;
+}
+
 .position-sticky {
   position: sticky;
   top: 0;

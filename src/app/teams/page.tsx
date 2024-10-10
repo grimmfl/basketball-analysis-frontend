@@ -45,8 +45,8 @@ export default function TeamsPage() {
   };
 
   return (
-    <div>
-      <Table config={config}></Table>
+    <div className="min-h-screen max-h-screen">
+      <Table config={config} heightClassName="h-team-table"></Table>
     </div>
   );
 }

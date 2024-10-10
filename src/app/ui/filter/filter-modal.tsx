@@ -50,8 +50,6 @@ export default function FilterModal({ config }: { config: FilterModalConfig }) {
     defaultFilters: actualFilters
   };
 
-  console.log(actualFilters);
-
   const children = Array.isArray(config.button.props.children)
     ? config.button.props.children
     : [config.button.props.children];
