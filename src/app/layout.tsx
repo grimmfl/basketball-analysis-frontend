@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Breadcrumbs from "@/app/ui/breadcrumbs";
+import Breadcrumbs from "@/app/ui/breadcrumbs/breadcrumbs";
 import Navbar from "@/app/ui/navbar";
 
 const geistSans = localFont({
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body id="root">
         <Navbar></Navbar>
         <div className="m-10">
           <Breadcrumbs></Breadcrumbs>

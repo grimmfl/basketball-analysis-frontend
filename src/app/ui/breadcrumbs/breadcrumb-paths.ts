@@ -1,19 +1,4 @@
-"use client";
-
-import { usePathname, useRouter } from "next/navigation";
 import { Player, Team } from "@/app/models";
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
-
-export function prettifyName(name: string) {
-  name = name.substring(0, 1)!.toUpperCase() + name.substring(1, name.length);
-
-  name = name
-    .split("_")
-    .map((n) => n.substring(0, 1)!.toUpperCase() + n.substring(1, name.length))
-    .join(" ");
-
-  return name;
-}
 
 async function getTeamName(id: string): Promise<string> {
   const response = await fetch(
@@ -41,7 +26,7 @@ interface Path {
   children: Path[];
 }
 
-const PATHS: Path[] = [
+export const PATHS: Path[] = [
   {
     path: "teams",
     resolve: async (_: string) => "teams",
@@ -95,7 +80,10 @@ const PATHS: Path[] = [
   }
 ];
 
-async function parse_path(paths: Path[], crumbs: string[]): Promise<string[]> {
+export async function parse_path(
+  paths: Path[],
+  crumbs: string[]
+): Promise<string[]> {
   if (crumbs.length == 0) return [];
 
   const crumb = crumbs[0];
@@ -121,42 +109,4 @@ async function parse_path(paths: Path[], crumbs: string[]): Promise<string[]> {
   }
 
   return [];
-}
-
-export default async function Breadcrumbs() {
-  function routeTo(idx: number) {
-    router.push("/" + crumbs.slice(0, idx + 1).join("/"));
-  }
-
-  const path = usePathname();
-  const router = useRouter();
-
-  const crumbs = path.split("/").filter((c) => c != "");
-
-  const names = await parse_path(PATHS, crumbs);
-
-  return (
-    <div className="flex">
-      {names.map((c, idx) => (
-        <span key={idx} className="font-bold flex">
-          {idx < names.length - 1 ? (
-            <a
-              className="underline hover:cursor-pointer"
-              onClick={() => routeTo(idx)}
-            >
-              {prettifyName(c)}
-            </a>
-          ) : (
-            prettifyName(c)
-          )}
-
-          {idx < names.length - 1 ? (
-            <ChevronRightIcon className="w-4 mx-1"></ChevronRightIcon>
-          ) : (
-            ""
-          )}
-        </span>
-      ))}
-    </div>
-  );
 }

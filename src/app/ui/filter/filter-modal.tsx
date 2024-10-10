@@ -65,12 +65,14 @@ export default function FilterModal({ config }: { config: FilterModalConfig }) {
               createElement("div", {
                 className:
                   "absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-highlight border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900",
-                children: actualFilters.length
+                children: actualFilters.length,
+                key: 0
               })
             ]
     })
   });
 
+  Modal.setAppElement("#root");
   return (
     <div>
       {button}

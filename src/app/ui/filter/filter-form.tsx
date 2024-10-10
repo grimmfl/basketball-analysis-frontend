@@ -239,7 +239,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                       <input
                         type="checkbox"
                         checked={filterIsActive(f)}
-                        onClick={() => toggleFilter(f)}
+                        onChange={() => toggleFilter(f)}
                         className="mr-2"
                       ></input>
                     </td>
@@ -268,7 +268,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                       <input
                         type="checkbox"
                         checked={filterIsActive(f)}
-                        onClick={() => toggleFilter(f)}
+                        onChange={() => toggleFilter(f)}
                         className="mr-2"
                       ></input>
                     </td>
