@@ -25,7 +25,7 @@ export const StatOptions: Option[] = [
     key: "statline.fts_attempted_per_game"
   },
   { name: "Free Throws Percentage (FG %)", key: "statline.ft_pct" },
-  { name: "Turnovers (TO)", key: "statline.turnovers_per_game" },
+  { name: "Turnovers (TOV)", key: "statline.turnovers_per_game" },
   { name: "Minutes (MIN)", key: "statline.minutes_per_game" },
   { name: "Games Played (GP)", key: "statline.games_played" },
   {
