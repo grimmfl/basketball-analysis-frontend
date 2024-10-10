@@ -145,9 +145,8 @@ export default function FilterSelect<T extends Model>({
             <Spinner></Spinner>
           ) : (
             data.map((t, idx) => (
-              <div>
+              <div key={idx}>
                 <button
-                  key={idx}
                   onClick={() => {
                     setSelected(t);
                     onChange(t.id);

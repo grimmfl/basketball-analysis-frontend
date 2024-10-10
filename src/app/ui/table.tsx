@@ -10,6 +10,7 @@ import { Observable } from "@/app/observable";
 import { resolveProperty } from "@/app/utils";
 import Spinner from "@/app/ui/spinner";
 import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
+import { FilterType } from "@/app/translations";
 
 export enum ColumnAlignment {
   Left,
@@ -76,7 +77,7 @@ export default function Table<T>({
       name: "search",
       key: "search",
       comparator: { operator: ComparatorOperator.Contains, value: value },
-      isEnum: false,
+      type: "string",
       options: []
     });
 
@@ -158,7 +159,7 @@ export default function Table<T>({
         key: f[0].attribute,
         name: "",
         comparator: f[0].comparator,
-        isEnum: false,
+        type: "none" as FilterType,
         options: []
       }));
       setExternalFilters(external);
@@ -188,7 +189,7 @@ export default function Table<T>({
         key: f[0].attribute,
         name: "",
         comparator: f[0].comparator,
-        isEnum: false,
+        type: "none",
         options: []
       }))
     );

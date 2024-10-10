@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { ComparatorOperator, SearchComparator } from "@/app/fixed-models";
 import { getProperty, removeDuplicates, zip } from "@/app/utils";
-import { Translations } from "@/app/translations";
+import { FilterType, Translations } from "@/app/translations";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
 import { Option } from "@/app/select-options";
 
@@ -18,7 +18,7 @@ export interface Filter {
   name: string;
   key: string;
   comparator: SearchComparator;
-  isEnum: boolean;
+  type: FilterType;
   options: Option[];
 }
 
@@ -28,20 +28,22 @@ interface FilterGroup {
   filters: Filter[];
 }
 
-function resolveEnumFilter(key: string, enum_value: string): Filter {
-  const value = enum_value.replace("__enums__.", "");
-  const translations = getProperty(Translations.__enums__, value);
+function resolveEnumFilter(
+  key: string,
+  enum_value: { type: string; name: string }
+): Filter {
+  const translations = getProperty(Translations.__enums__, enum_value.name);
   const options = Object.getOwnPropertyNames(translations).filter(
-    (o) => o != "__name__"
+    (o) => o !== "__name__"
   );
 
   return {
-    name: getProperty(translations, "__name__"),
+    name: getProperty(translations, "__name__").name,
     key: key,
     comparator: { operator: ComparatorOperator.Equal, value: options[0] },
-    isEnum: true,
+    type: "enum",
     options: options.map((o) => ({
-      name: getProperty(translations, o),
+      name: getProperty(translations, o).name,
       key: o
     }))
   };
@@ -54,7 +56,7 @@ function resolveFilters(
   skipPrefix: number = 0
 ): FilterGroup[] {
   const group: FilterGroup = {
-    name: getProperty(translations, "__name__"),
+    name: getProperty(translations, "__name__")?.name,
     filters: [],
     key: prefix
   };
@@ -64,15 +66,23 @@ function resolveFilters(
   for (const property of properties) {
     const value = getProperty(translations, property);
 
-    if (typeof value === "string") {
-      if (value.startsWith("__enums__")) {
+    if (!Object.hasOwn(value, "__name__")) {
+      if (value.type == "enum") {
         group.filters.push(resolveEnumFilter(prefix + property, value));
       } else {
         group.filters.push({
           key: prefix + property,
-          name: value,
-          comparator: { operator: ComparatorOperator.Equal, value: 0 },
-          isEnum: false,
+          name: value.name,
+          comparator: {
+            operator:
+              value.type === "boolean"
+                ? ComparatorOperator.IsTrue
+                : value.type === "string"
+                  ? ComparatorOperator.Contains
+                  : ComparatorOperator.Equal,
+            value: value.type === "string" ? "" : 0
+          },
+          type: value.type,
           options: []
         });
       }
@@ -96,7 +106,7 @@ function resolveFilters(
       .filter((g) => g.filters.length > 0)
       .sort((a, b) => a.key.length - b.key.length),
     (i) => i.name
-  );
+  ).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function resolveTableFilters(table: string) {
@@ -138,6 +148,12 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
 
   const availableFilters = resolveTableFilters(config.tableName);
   const filterOperators = getOperators();
+  const booleanOperators = [
+    { name: "Yes", value: ComparatorOperator.IsTrue },
+    { name: "No", value: ComparatorOperator.IsFalse }
+  ];
+
+  console.log(availableFilters);
 
   const defaultFilters = config.defaultFilters ?? [];
   let defaultGroups = availableFilters.filter((g) =>
@@ -213,11 +229,11 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
   return (
     <table>
       <tbody>
-        {availableFilters.map((g) =>
+        {availableFilters.map((g, idx1) =>
           visibleGroups.some((vg) => vg.name === g.name) ? (
             [
               <tr
-                key={g.name + "__name_-"}
+                key={`${idx1}-toggle`}
                 className="hover:cursor-pointer"
                 onClick={() => toggleFilterGroup(g)}
               >
@@ -227,10 +243,13 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                 <td className="pt-5">{g.name}</td>
               </tr>
             ].concat(
-              g.filters.map((f) =>
-                f.key.includes("id") ? (
+              g.filters.map((f, idx2) =>
+                // FILTER SELECT
+                f.key.includes("_id") ||
+                f.key.includes(".id") ||
+                f.key === "id" ? (
                   <tr
-                    key={g.name + f.key}
+                    key={`${idx1}${idx2}`}
                     className={clsx({
                       "text-gray-500": !filterIsActive(f)
                     })}
@@ -259,7 +278,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                   </tr>
                 ) : (
                   <tr
-                    key={g.name + f.key}
+                    key={`${idx1}${idx2}`}
                     className={clsx({
                       "text-gray-500": !filterIsActive(f)
                     })}
@@ -282,7 +301,10 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                         }
                         defaultValue={f.comparator.operator}
                       >
-                        {filterOperators.map((o) => (
+                        {(f.type === "boolean"
+                          ? booleanOperators
+                          : filterOperators
+                        ).map((o) => (
                           <option key={o.value} value={o.value}>
                             {o.name}
                           </option>
@@ -290,7 +312,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                       </select>
                     </td>
                     <td>
-                      {f.isEnum ? (
+                      {f.type === "enum" ? (
                         <select
                           disabled={!filterIsActive(f)}
                           className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
@@ -300,16 +322,19 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                           }
                         >
                           {f.options.map((o, idx) => (
-                            <option key={o.key} value={o.key}>
+                            <option key={idx} value={o.key}>
                               {o.name}
                             </option>
                           ))}
                         </select>
+                      ) : f.type === "boolean" ? (
+                        ""
                       ) : (
                         <input
+                          type={f.type === "number" ? "number" : "text"}
                           disabled={!filterIsActive(f)}
                           className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
-                          value={f.comparator.value}
+                          defaultValue={f.comparator.value}
                           onChange={(evt) =>
                             setFilterValue(f, evt.target.value)
                           }
@@ -322,7 +347,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
             )
           ) : (
             <tr
-              key={g.name + "toggle"}
+              key={`${idx1}toggle`}
               className="hover:cursor-pointer"
               onClick={() => toggleFilterGroup(g)}
             >

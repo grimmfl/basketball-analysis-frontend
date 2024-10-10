@@ -4,7 +4,9 @@ export enum ComparatorOperator {
   IsSet,
   Contains,
   Greater,
-  GreaterEqual
+  GreaterEqual,
+  IsTrue,
+  IsFalse
 }
 
 export interface SearchComparator {

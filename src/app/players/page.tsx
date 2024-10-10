@@ -77,7 +77,7 @@ export default function () {
 
   return (
     <div>
-      <Table config={config}></Table>
+      <Table config={config} heightClassName="h-team-table"></Table>
     </div>
   );
 }

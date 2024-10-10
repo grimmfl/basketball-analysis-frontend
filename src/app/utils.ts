@@ -24,7 +24,7 @@ export function resolveProperty(entry: any, column: string) {
 }
 
 export function translate(property: string): string {
-  return resolveProperty(Translations, property);
+  return resolveProperty(Translations, property).name;
 }
 
 export function zip<T1, T2>(
