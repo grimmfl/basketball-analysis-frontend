@@ -89,7 +89,7 @@ export const Translations = {
       number: { name: "Number", type: "string" },
       position: { name: "Position", type: "string" },
       height: { name: "Height", type: "string" },
-      weight: { name: "Weight", type: "string" },
+      weight: { name: "Weight", type: "number" },
       age: { name: "Age", type: "number" },
       roster: {
         team: {
@@ -208,7 +208,7 @@ export const Translations = {
         number: { name: "Number", type: "string" },
         position: { name: "Position", type: "string" },
         height: { name: "Height", type: "string" },
-        weight: { name: "Weight", type: "string" },
+        weight: { name: "Weight", type: "number" },
         age: { name: "Age", type: "number" },
         roster: {
           team: {
@@ -427,7 +427,7 @@ export const Translations = {
         number: { name: "Number", type: "string" },
         position: { name: "Position", type: "string" },
         height: { name: "Height", type: "string" },
-        weight: { name: "Weight", type: "string" },
+        weight: { name: "Weight", type: "number" },
         age: { name: "Age", type: "number" },
         roster: {
           team: {
