@@ -178,7 +178,7 @@ export default function () {
   );
 
   return (
-    <div>
+    <div className="min-h-screen max-h-screen">
       {isPlayerLoading ? (
         <Spinner></Spinner>
       ) : (
@@ -233,7 +233,11 @@ export default function () {
         </div>
       )}
       <div>
-        {config == null ? <div></div> : <Table config={config}></Table>}
+        {config == null ? (
+          <div></div>
+        ) : (
+          <Table config={config} heightClassName="h-player-page-table"></Table>
+        )}
       </div>
     </div>
   );

@@ -38,7 +38,13 @@ export interface TableConfig<T> {
   showFilter: boolean;
 }
 
-export default function Table<T>({ config }: { config: TableConfig<T> }) {
+export default function Table<T>({
+  config,
+  heightClassName
+}: {
+  config: TableConfig<T>;
+  heightClassName?: string;
+}) {
   const filterConfig: FilterConfig = {
     tableName: config.tableName,
     onChange: (f) => setFilters(f)
@@ -68,7 +74,9 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
     newFilter.push({
       name: "search",
       key: "search",
-      comparator: { operator: ComparatorOperator.Contains, value: value }
+      comparator: { operator: ComparatorOperator.Contains, value: value },
+      isEnum: false,
+      options: []
     });
 
     setFilters(newFilter);
@@ -148,7 +156,9 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       const external = r.filter.map((f) => ({
         key: f[0].attribute,
         name: "",
-        comparator: f[0].comparator
+        comparator: f[0].comparator,
+        isEnum: false,
+        options: []
       }));
       setExternalFilters(external);
       search(r, external);
@@ -176,7 +186,9 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       config.initialSearchRequest.filter.map((f) => ({
         key: f[0].attribute,
         name: "",
-        comparator: f[0].comparator
+        comparator: f[0].comparator,
+        isEnum: false,
+        options: []
       }))
     );
   }, []);
@@ -194,9 +206,9 @@ export default function Table<T>({ config }: { config: TableConfig<T> }) {
       ) : (
         <div></div>
       )}
-      <div className="flex justify-between">
+      <div className={`flex justify-between ${heightClassName ?? ""}`}>
         <div className="max-h-screen w-full mr-2">
-          <div className="h-full h-table overflow-y-auto">
+          <div className="h-table overflow-y-auto">
             <table className="min-w-full" id="table" ref={tableRef}>
               <thead className="position-sticky bg-secondary border-b-4 border-b-gray-900">
                 <tr className="text-left border-b-4 border-b-gray-900">

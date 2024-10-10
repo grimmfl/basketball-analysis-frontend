@@ -48,6 +48,10 @@ body {
   height: 70%;
 }
 
+.h-player-page-table {
+  height: 25rem;
+}
+
 .position-sticky {
   position: sticky;
   top: 0;
