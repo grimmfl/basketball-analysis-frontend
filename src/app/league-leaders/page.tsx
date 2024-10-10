@@ -177,7 +177,7 @@ export default function () {
       ></input>
 
       {config.columns.length > 0 ? (
-        <Table config={config}></Table>
+        <Table config={config} heightClassName="h-team-table"></Table>
       ) : (
         <div></div>
       )}

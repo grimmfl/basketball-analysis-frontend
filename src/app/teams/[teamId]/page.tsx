@@ -86,7 +86,13 @@ export default function () {
       <h1 className="text-xl mb-5">
         {team.city} {team.name}
       </h1>
-      <div>{config == null ? "" : <Table config={config}></Table>}</div>
+      <div>
+        {config == null ? (
+          ""
+        ) : (
+          <Table config={config} heightClassName="h-team-table"></Table>
+        )}
+      </div>
     </div>
   );
 }
