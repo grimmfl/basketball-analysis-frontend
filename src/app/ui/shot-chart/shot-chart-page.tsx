@@ -12,7 +12,8 @@ export default function ShotChartPage() {
 
   const filterConfig: FilterConfig = {
     onChange: (f) => search(f),
-    tableName: "Shot"
+    tableName: "Shot",
+    expandGroups: true
   };
 
   const [data, setData] = useState([] as Shot[]);

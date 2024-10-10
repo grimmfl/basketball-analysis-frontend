@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { round } from "@/app/utils";
 import { Observable } from "@/app/observable";
-import { PlayerSeasonStatline } from "@/app/models";
+import { PlayerSeasonTeamStatline } from "@/app/models";
 import { useRouter } from "next/navigation";
 import { SeasonOptions, StatOptions } from "@/app/select-options";
 
@@ -135,8 +135,8 @@ export default function () {
     initialSearchRequest: initialSearchRequest,
     showSearch: false,
     searchRequest$: new Observable(initialSearchRequest),
-    tableName: PlayerSeasonStatline.name,
-    onRowClick: (entry: PlayerSeasonStatline) =>
+    tableName: PlayerSeasonTeamStatline.name,
+    onRowClick: (entry: PlayerSeasonTeamStatline) =>
       router.push(`/players/${entry.player_id}`),
     showFilter: true
   });

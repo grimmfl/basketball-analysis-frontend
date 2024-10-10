@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Player, PlayerSeasonStatline, Shot } from "@/app/models";
+import { Player, PlayerSeasonTeamStatline, Shot } from "@/app/models";
 import { OrderDir } from "@/app/fixed-models";
 import { displayHeight, round } from "@/app/utils";
 import Table, { ColumnAlignment, TableConfig } from "@/app/ui/table";
@@ -164,7 +164,7 @@ export default function () {
           },
           onRowClick: undefined,
           showSearch: false,
-          tableName: PlayerSeasonStatline.name,
+          tableName: PlayerSeasonTeamStatline.name,
           showFilter: false
         });
       });
@@ -174,7 +174,7 @@ export default function () {
   }, []);
 
   const [config, setConfig] = useState(
-    undefined as unknown as TableConfig<PlayerSeasonStatline>
+    undefined as unknown as TableConfig<PlayerSeasonTeamStatline>
   );
 
   return (

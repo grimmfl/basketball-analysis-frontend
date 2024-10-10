@@ -11,6 +11,7 @@ export interface FilterConfig {
   onChange: (filters: Filter[]) => void;
   tableName: string;
   defaultFilters?: Filter[];
+  expandGroups?: boolean;
 }
 
 export interface Filter {
@@ -133,13 +134,17 @@ function getFilterSelectModel(filter: Filter): FilterSelectModel | null {
 }
 
 export default function FilterForm({ config }: { config: FilterConfig }) {
+  const expandGroups = config.expandGroups ?? false;
+
   const availableFilters = resolveTableFilters(config.tableName);
   const filterOperators = getOperators();
 
   const defaultFilters = config.defaultFilters ?? [];
-  const defaultGroups = availableFilters.filter((g) =>
+  let defaultGroups = availableFilters.filter((g) =>
     g.filters.some((f) => defaultFilters.some((df) => f.key === df.key))
   );
+
+  if (expandGroups) defaultGroups = availableFilters;
 
   defaultGroups.forEach((g) =>
     g.filters.forEach((f) => {

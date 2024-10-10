@@ -15,7 +15,7 @@ import {
   OrderDir,
   SearchRequest
 } from "@/app/fixed-models";
-import { PlayerSeasonStatline } from "@/app/models";
+import { PlayerSeasonTeamStatline } from "@/app/models";
 import { Tooltip, useTooltip } from "@visx/tooltip";
 import { voronoi } from "@visx/voronoi";
 import { localPoint } from "@visx/event";
@@ -78,7 +78,7 @@ export default function Example() {
   const maxX = width - marginX;
   const maxY = height - marginY;
 
-  const [data, setData] = useState([] as PlayerSeasonStatline[]);
+  const [data, setData] = useState([] as PlayerSeasonTeamStatline[]);
   const [xAxis, setXAxis] = useState("statline.threes_attempted_per_game");
   const [yAxis, setYAxis] = useState("statline.threes_pct");
   const [season, setSeason] = useState(SeasonOptions[0].key);
@@ -95,7 +95,7 @@ export default function Example() {
   const [isLoading, setIsLoading] = useState(false);
 
   const filterConfig: FilterModalConfig = {
-    tableName: "PlayerSeasonStatline",
+    tableName: "PlayerSeasonTeamStatline",
     onChange: (f) => setFilters(f),
     button: (
       <button className="relative border border-gray-700 p-3 min-w-full mb-2 hover:bg-gray-900">
@@ -109,7 +109,7 @@ export default function Example() {
     defaultFilters: filters
   };
 
-  const tooltip = useTooltip<PlayerSeasonStatline>();
+  const tooltip = useTooltip<PlayerSeasonTeamStatline>();
   const svgRef = useRef<SVGSVGElement>(null);
 
   const searchRequest: SearchRequest = {
@@ -147,8 +147,9 @@ export default function Example() {
       }
     )
       .then((r) => r.json())
-      .then((d: PlayerSeasonStatline[]) => {
+      .then((d: PlayerSeasonTeamStatline[]) => {
         setData(d);
+        console.log(d);
         setIsLoading(false);
       });
   }
@@ -289,11 +290,11 @@ export default function Example() {
                 <br />
                 <br />
                 <div className="flex justify-between">
-                  <b>{translate(`PlayerSeasonStatline.${xAxis}`)}:</b>
+                  <b>{translate(`PlayerSeasonTeamStatline.${xAxis}`)}:</b>
                   {round(resolveProperty(tooltip.tooltipData!, xAxis), 2)}
                 </div>
                 <div className="flex justify-between">
-                  <b>{translate(`PlayerSeasonStatline.${yAxis}`)}:</b>
+                  <b>{translate(`PlayerSeasonTeamStatline.${yAxis}`)}:</b>
                   {round(resolveProperty(tooltip.tooltipData!, yAxis), 2)}
                 </div>
               </div>

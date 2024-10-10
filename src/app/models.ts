@@ -211,7 +211,7 @@ export class Game {
   }
 }
 
-export class PlayerSeasonStatline {
+export class PlayerSeasonTeamStatline {
   player_id: number;
   statline_id: number;
   season: string;
@@ -219,6 +219,7 @@ export class PlayerSeasonStatline {
   player: Player;
   statline: Statline;
   team: Team;
+  player_season_shot_statline: PlayerSeasonShotStatline;
 
   constructor(
     player_id: number,
@@ -227,7 +228,8 @@ export class PlayerSeasonStatline {
     team_id: number,
     player: Player,
     statline: Statline,
-    team: Team
+    team: Team,
+    player_season_shot_statline: PlayerSeasonShotStatline
   ) {
     this.player_id = player_id;
     this.statline_id = statline_id;
@@ -236,6 +238,7 @@ export class PlayerSeasonStatline {
     this.player = player;
     this.statline = statline;
     this.team = team;
+    this.player_season_shot_statline = player_season_shot_statline;
   }
 }
 
@@ -376,5 +379,189 @@ export class Shot {
     this.loc_y = loc_y;
     this.shot_attempted = shot_attempted;
     this.shot_made = shot_made;
+  }
+}
+
+export class ShotStatline {
+  id: number;
+  fgs_attempted_very_tight: number;
+  fgs_made_very_tight: number;
+  threes_attempted_very_tight: number;
+  threes_made_very_tight: number;
+  fgs_attempted_tight: number;
+  fgs_made_tight: number;
+  threes_attempted_tight: number;
+  threes_made_tight: number;
+  fgs_attempted_open: number;
+  fgs_made_open: number;
+  threes_attempted_open: number;
+  threes_made_open: number;
+  fgs_attempted_wide_open: number;
+  fgs_made_wide_open: number;
+  threes_attempted_wide_open: number;
+  threes_made_wide_open: number;
+  fg_pct_very_tight: number;
+  threes_pct_very_tight: number;
+  fg_pct_tight: number;
+  threes_pct_tight: number;
+  fg_pct_open: number;
+  threes_pct_open: number;
+  fg_pct_wide_open: number;
+  threes_pct_wide_open: number;
+  games_played: number;
+  fgs_attempted_very_tight_per_game: number;
+  fgs_made_very_tight_per_game: number;
+  threes_attempted_very_tight_per_game: number;
+  threes_made_very_tight_per_game: number;
+  fgs_attempted_tight_per_game: number;
+  fgs_made_tight_per_game: number;
+  threes_attempted_tight_per_game: number;
+  threes_made_tight_per_game: number;
+  fgs_attempted_open_per_game: number;
+  fgs_made_open_per_game: number;
+  threes_attempted_open_per_game: number;
+  threes_made_open_per_game: number;
+  fgs_attempted_wide_open_per_game: number;
+  fgs_made_wide_open_per_game: number;
+  threes_attempted_wide_open_per_game: number;
+  threes_made_wide_open_per_game: number;
+  mid_range_attempted: number;
+  mid_range_made: number;
+  mid_range_pct: number;
+  mid_range_attempted_per_game: number;
+  mid_range_made_per_game: number;
+  paint_attempted: number;
+  paint_made: number;
+  paint_pct: number;
+  paint_attempted_per_game: number;
+  paint_made_per_game: number;
+
+  constructor(
+    id: number,
+    fgs_attempted_very_tight: number,
+    fgs_made_very_tight: number,
+    threes_attempted_very_tight: number,
+    threes_made_very_tight: number,
+    fgs_attempted_tight: number,
+    fgs_made_tight: number,
+    threes_attempted_tight: number,
+    threes_made_tight: number,
+    fgs_attempted_open: number,
+    fgs_made_open: number,
+    threes_attempted_open: number,
+    threes_made_open: number,
+    fgs_attempted_wide_open: number,
+    fgs_made_wide_open: number,
+    threes_attempted_wide_open: number,
+    threes_made_wide_open: number,
+    fg_pct_very_tight: number,
+    threes_pct_very_tight: number,
+    fg_pct_tight: number,
+    threes_pct_tight: number,
+    fg_pct_open: number,
+    threes_pct_open: number,
+    fg_pct_wide_open: number,
+    threes_pct_wide_open: number,
+    games_played: number,
+    fgs_attempted_very_tight_per_game: number,
+    fgs_made_very_tight_per_game: number,
+    threes_attempted_very_tight_per_game: number,
+    threes_made_very_tight_per_game: number,
+    fgs_attempted_tight_per_game: number,
+    fgs_made_tight_per_game: number,
+    threes_attempted_tight_per_game: number,
+    threes_made_tight_per_game: number,
+    fgs_attempted_open_per_game: number,
+    fgs_made_open_per_game: number,
+    threes_attempted_open_per_game: number,
+    threes_made_open_per_game: number,
+    fgs_attempted_wide_open_per_game: number,
+    fgs_made_wide_open_per_game: number,
+    threes_attempted_wide_open_per_game: number,
+    threes_made_wide_open_per_game: number,
+    mid_range_attempted: number,
+    mid_range_made: number,
+    mid_range_pct: number,
+    mid_range_attempted_per_game: number,
+    mid_range_made_per_game: number,
+    paint_attempted: number,
+    paint_made: number,
+    paint_pct: number,
+    paint_attempted_per_game: number,
+    paint_made_per_game: number
+  ) {
+    this.id = id;
+    this.fgs_attempted_very_tight = fgs_attempted_very_tight;
+    this.fgs_made_very_tight = fgs_made_very_tight;
+    this.threes_attempted_very_tight = threes_attempted_very_tight;
+    this.threes_made_very_tight = threes_made_very_tight;
+    this.fgs_attempted_tight = fgs_attempted_tight;
+    this.fgs_made_tight = fgs_made_tight;
+    this.threes_attempted_tight = threes_attempted_tight;
+    this.threes_made_tight = threes_made_tight;
+    this.fgs_attempted_open = fgs_attempted_open;
+    this.fgs_made_open = fgs_made_open;
+    this.threes_attempted_open = threes_attempted_open;
+    this.threes_made_open = threes_made_open;
+    this.fgs_attempted_wide_open = fgs_attempted_wide_open;
+    this.fgs_made_wide_open = fgs_made_wide_open;
+    this.threes_attempted_wide_open = threes_attempted_wide_open;
+    this.threes_made_wide_open = threes_made_wide_open;
+    this.fg_pct_very_tight = fg_pct_very_tight;
+    this.threes_pct_very_tight = threes_pct_very_tight;
+    this.fg_pct_tight = fg_pct_tight;
+    this.threes_pct_tight = threes_pct_tight;
+    this.fg_pct_open = fg_pct_open;
+    this.threes_pct_open = threes_pct_open;
+    this.fg_pct_wide_open = fg_pct_wide_open;
+    this.threes_pct_wide_open = threes_pct_wide_open;
+    this.games_played = games_played;
+    this.fgs_attempted_very_tight_per_game = fgs_attempted_very_tight_per_game;
+    this.fgs_made_very_tight_per_game = fgs_made_very_tight_per_game;
+    this.threes_attempted_very_tight_per_game =
+      threes_attempted_very_tight_per_game;
+    this.threes_made_very_tight_per_game = threes_made_very_tight_per_game;
+    this.fgs_attempted_tight_per_game = fgs_attempted_tight_per_game;
+    this.fgs_made_tight_per_game = fgs_made_tight_per_game;
+    this.threes_attempted_tight_per_game = threes_attempted_tight_per_game;
+    this.threes_made_tight_per_game = threes_made_tight_per_game;
+    this.fgs_attempted_open_per_game = fgs_attempted_open_per_game;
+    this.fgs_made_open_per_game = fgs_made_open_per_game;
+    this.threes_attempted_open_per_game = threes_attempted_open_per_game;
+    this.threes_made_open_per_game = threes_made_open_per_game;
+    this.fgs_attempted_wide_open_per_game = fgs_attempted_wide_open_per_game;
+    this.fgs_made_wide_open_per_game = fgs_made_wide_open_per_game;
+    this.threes_attempted_wide_open_per_game =
+      threes_attempted_wide_open_per_game;
+    this.threes_made_wide_open_per_game = threes_made_wide_open_per_game;
+    this.mid_range_attempted = mid_range_attempted;
+    this.mid_range_made = mid_range_made;
+    this.mid_range_pct = mid_range_pct;
+    this.mid_range_attempted_per_game = mid_range_attempted_per_game;
+    this.mid_range_made_per_game = mid_range_made_per_game;
+    this.paint_attempted = paint_attempted;
+    this.paint_made = paint_made;
+    this.paint_pct = paint_pct;
+    this.paint_attempted_per_game = paint_attempted_per_game;
+    this.paint_made_per_game = paint_made_per_game;
+  }
+}
+
+export class PlayerSeasonShotStatline {
+  player_id: number;
+  shot_statline_id: number;
+  season: string;
+  shot_statline: ShotStatline;
+
+  constructor(
+    player_id: number,
+    shot_statline_id: number,
+    season: string,
+    shot_statline: ShotStatline
+  ) {
+    this.player_id = player_id;
+    this.shot_statline_id = shot_statline_id;
+    this.season = season;
+    this.shot_statline = shot_statline;
   }
 }
