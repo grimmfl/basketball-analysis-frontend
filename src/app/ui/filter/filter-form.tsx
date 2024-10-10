@@ -217,6 +217,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
           visibleGroups.some((vg) => vg.name === g.name) ? (
             [
               <tr
+                key={g.name + "__name_-"}
                 className="hover:cursor-pointer"
                 onClick={() => toggleFilterGroup(g)}
               >
@@ -282,7 +283,9 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                         defaultValue={f.comparator.operator}
                       >
                         {filterOperators.map((o) => (
-                          <option value={o.value}>{o.name}</option>
+                          <option key={o.value} value={o.value}>
+                            {o.name}
+                          </option>
                         ))}
                       </select>
                     </td>
@@ -319,6 +322,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
             )
           ) : (
             <tr
+              key={g.name + "toggle"}
               className="hover:cursor-pointer"
               onClick={() => toggleFilterGroup(g)}
             >
