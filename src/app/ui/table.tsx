@@ -209,7 +209,12 @@ export default function Table<T>({
         <div></div>
       )}
       <div className={`flex justify-between ${heightClassName ?? ""}`}>
-        <div className="max-h-screen w-full mr-2">
+        <div
+          className={clsx("max-h-screen mr-2", {
+            "w-3/5": config.showFilter,
+            "w-full": !config.showFilter
+          })}
+        >
           <div className="h-table overflow-y-auto">
             <table className="min-w-full" id="table" ref={tableRef}>
               <thead className="position-sticky bg-secondary border-b-4 border-b-gray-900">
@@ -271,7 +276,7 @@ export default function Table<T>({
         </div>
         <div
           hidden={!config.showFilter}
-          className="w-1/2 max-h-screen h-screen"
+          className="w-2/5 max-h-screen h-screen"
         >
           <button
             className="border border-gray-700 p-3 min-w-full mb-2 hover:bg-gray-900"

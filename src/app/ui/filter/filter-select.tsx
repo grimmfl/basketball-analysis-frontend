@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Tooltip, TooltipRefProps } from "react-tooltip";
 import { Team } from "@/app/models";
 import Spinner from "@/app/ui/spinner";
+import clsx from "clsx";
 
 export enum FilterSelectModel {
   Team
@@ -33,12 +34,14 @@ export default function FilterSelect<T extends Model>({
   model,
   onChange,
   disabled,
-  defaultId
+  defaultId,
+  inputWidth
 }: {
   model: FilterSelectModel;
   onChange: (id: number) => void;
   disabled?: boolean;
   defaultId?: number;
+  inputWidth?: string;
 }) {
   const config = filterSelectConfigs.find((c) => c.model === model);
 
@@ -99,11 +102,15 @@ export default function FilterSelect<T extends Model>({
     search(searchValue);
   }, []);
 
+  let inputClassName =
+    "bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none ";
+  inputClassName += inputWidth ?? "min-w-full";
+
   return (
     <div>
       <input
         data-tooltip-id="tooltip"
-        className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none min-w-full"
+        className={inputClassName}
         placeholder="Search ..."
         value={
           selected == null

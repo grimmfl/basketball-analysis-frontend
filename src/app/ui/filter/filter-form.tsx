@@ -270,6 +270,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                           model={getFilterSelectModel(f)!}
                           onChange={(id) => setFilterValue(f, id.toString())}
                           defaultId={parseInt(f.comparator.value, 10)}
+                          inputWidth="w-40"
                         ></FilterSelect>
                       ) : (
                         <span className="m-3">Not Available</span>
