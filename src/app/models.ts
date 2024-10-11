@@ -565,3 +565,31 @@ export class PlayerSeasonShotStatline {
     this.shot_statline = shot_statline;
   }
 }
+
+export class LeagueSeasonStatline {
+  season: string;
+  player_statline_id: number;
+  team_statline_id: number;
+  player_shot_statline_id: number;
+  player_statline: Statline;
+  team_statline: Statline;
+  player_shot_statline: ShotStatline;
+
+  constructor(
+    season: string,
+    player_statline_id: number,
+    team_statline_id: number,
+    player_shot_statline_id: number,
+    player_statline: Statline,
+    team_statline: Statline,
+    player_shot_statline: ShotStatline
+  ) {
+    this.season = season;
+    this.player_statline_id = player_statline_id;
+    this.team_statline_id = team_statline_id;
+    this.player_shot_statline_id = player_shot_statline_id;
+    this.player_statline = player_statline;
+    this.team_statline = team_statline;
+    this.player_shot_statline = player_shot_statline;
+  }
+}

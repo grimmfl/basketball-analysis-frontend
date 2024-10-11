@@ -15,7 +15,12 @@ import {
   OrderDir,
   SearchRequest
 } from "@/app/fixed-models";
-import { PlayerSeasonTeamStatline } from "@/app/models";
+import {
+  LeagueSeasonStatline,
+  PlayerSeasonTeamStatline,
+  ShotStatline,
+  Statline
+} from "@/app/models";
 import { Tooltip, useTooltip } from "@visx/tooltip";
 import { voronoi } from "@visx/voronoi";
 import { localPoint } from "@visx/event";
@@ -28,6 +33,32 @@ import { Filter } from "@/app/ui/filter/filter-form";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import Spinner from "@/app/ui/spinner";
 import { Background, Highlight } from "@/app/globals";
+
+interface LeagueAverage {
+  leagueStatline: LeagueSeasonStatline;
+  statline: Statline;
+  player_season_shot_statline: {
+    shot_statline: ShotStatline;
+  };
+}
+
+class DataPoint extends Point {
+  statline?: PlayerSeasonTeamStatline;
+  leagueStatline?: LeagueAverage;
+  isLeagueAverage: boolean;
+
+  constructor(
+    x: number,
+    y: number,
+    statline?: PlayerSeasonTeamStatline,
+    leagueStatline?: LeagueAverage
+  ) {
+    super({ x: x, y: y });
+    this.statline = statline;
+    this.leagueStatline = leagueStatline;
+    this.isLeagueAverage = statline == null;
+  }
+}
 
 const axisColor = "#666";
 
@@ -82,6 +113,7 @@ export default function Example() {
   const [xAxis, setXAxis] = useState("statline.threes_attempted_per_game");
   const [yAxis, setYAxis] = useState("statline.threes_pct");
   const [season, setSeason] = useState(SeasonOptions[0].key);
+  const [leagueAverage, setLeagueAverage] = useState<LeagueSeasonStatline>();
   const [filters, setFilters] = useState([
     {
       key: "statline.threes_attempted_per_game",
@@ -109,7 +141,7 @@ export default function Example() {
     defaultFilters: filters
   };
 
-  const tooltip = useTooltip<PlayerSeasonTeamStatline>();
+  const tooltip = useTooltip<DataPoint>();
   const svgRef = useRef<SVGSVGElement>(null);
 
   const searchRequest: SearchRequest = {
@@ -155,12 +187,33 @@ export default function Example() {
 
   useEffect(() => {
     search();
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/league-average/${season}`)
+      .then((res) => res.json())
+      .then((s: LeagueSeasonStatline) => setLeagueAverage(s));
   }, []);
 
-  const points = data.map(
+  const points: DataPoint[] = data.map(
     (s) =>
-      new Point({ x: resolveProperty(s, xAxis), y: resolveProperty(s, yAxis) })
+      new DataPoint(resolveProperty(s, xAxis), resolveProperty(s, yAxis), s)
   );
+
+  if (leagueAverage != null) {
+    const helper: LeagueAverage = {
+      leagueStatline: leagueAverage,
+      statline: leagueAverage.player_statline,
+      player_season_shot_statline: {
+        shot_statline: leagueAverage.player_shot_statline
+      }
+    };
+    points.push(
+      new DataPoint(
+        resolveProperty(helper, xAxis),
+        resolveProperty(helper, yAxis),
+        undefined,
+        helper
+      )
+    );
+  }
 
   const xScale = scaleLinear<number>({
     range: [marginX, maxX],
@@ -199,18 +252,14 @@ export default function Example() {
       const closest = voronoiLayout.find(point.x, point.y, neighborRadius);
       if (!closest) return;
 
-      const dataPoint = data
-        .map((d) => ({
-          data: d,
-          x: resolveProperty(d, xAxis),
-          y: resolveProperty(d, yAxis)
-        }))
-        .find((d) => d.x === closest.data.x && d.y === closest.data.y);
+      const dataPoint = points.find(
+        (d) => d.x === closest.data.x && d.y === closest.data.y
+      );
 
       tooltip.showTooltip({
         tooltipLeft: xScale(closest.data!.x),
         tooltipTop: yScale(closest.data!.y),
-        tooltipData: dataPoint?.data
+        tooltipData: dataPoint
       });
     },
     [xScale, yScale, tooltip.showTooltip, voronoiLayout]
@@ -272,8 +321,8 @@ export default function Example() {
                   key={`point-${i}`}
                   cx={xScale(point.x)}
                   cy={yScale(point.y)}
-                  r={4}
-                  fill={Highlight}
+                  r={point.isLeagueAverage ? 5 : 4}
+                  fill={point.isLeagueAverage ? "white" : Highlight}
                 />
               ))}
             </Group>
@@ -284,17 +333,34 @@ export default function Example() {
               top={tooltip.tooltipTop! + 2}
             >
               <div>
-                {tooltip.tooltipData?.player.first_name}{" "}
-                {tooltip.tooltipData?.player.last_name}
+                {tooltip.tooltipData.isLeagueAverage
+                  ? "League Average"
+                  : `${tooltip.tooltipData?.statline?.player.first_name} ${tooltip.tooltipData?.statline?.player.last_name}`}
                 <br />
                 <br />
                 <div className="flex justify-between">
                   <b>{translate(`PlayerSeasonTeamStatline.${xAxis}`)}:</b>
-                  {round(resolveProperty(tooltip.tooltipData!, xAxis), 2)}
+                  {round(
+                    resolveProperty(
+                      tooltip.tooltipData.isLeagueAverage
+                        ? tooltip.tooltipData.leagueStatline
+                        : tooltip.tooltipData!.statline,
+                      xAxis
+                    ),
+                    2
+                  )}
                 </div>
                 <div className="flex justify-between">
                   <b>{translate(`PlayerSeasonTeamStatline.${yAxis}`)}:</b>
-                  {round(resolveProperty(tooltip.tooltipData!, yAxis), 2)}
+                  {round(
+                    resolveProperty(
+                      tooltip.tooltipData.isLeagueAverage
+                        ? tooltip.tooltipData.leagueStatline
+                        : tooltip.tooltipData!.statline,
+                      yAxis
+                    ),
+                    2
+                  )}
                 </div>
               </div>
             </Tooltip>

@@ -716,5 +716,203 @@ export const Translations = {
       __name__: { name: "Shot Stats", type: "number" }
     },
     __name__: { name: "Player Season Shot Stats", type: "number" }
+  },
+  LeagueSeasonStatline: {
+    season: { name: "TODO", type: "TODO" },
+    player_statline: {
+      points: { name: "Total PTS", type: "number" },
+      rebounds: { name: "Total REB", type: "number" },
+      assists: { name: "Total AST", type: "number" },
+      steals: { name: "Total STL", type: "number" },
+      blocks: { name: "Total BLK", type: "number" },
+      fgs_attempted: { name: "Total FGA", type: "number" },
+      fgs_made: { name: "Total FGM", type: "number" },
+      threes_attempted: { name: "Total 3PA", type: "number" },
+      threes_made: { name: "Total 3PM", type: "number" },
+      fts_attempted: { name: "Total FTA", type: "number" },
+      fts_made: { name: "Total FTM", type: "number" },
+      turnovers: { name: "Total TOV", type: "number" },
+      offensive_rebounds: { name: "Total OREB", type: "number" },
+      fouls: { name: "Total FLS", type: "number" },
+      games_played: { name: "GP", type: "number" },
+      minutes: { name: "Total MIN", type: "number" },
+      points_per_game: { name: "PTS", type: "number" },
+      rebounds_per_game: { name: "REB", type: "number" },
+      assists_per_game: { name: "AST", type: "number" },
+      steals_per_game: { name: "STL", type: "number" },
+      blocks_per_game: { name: "BLK", type: "number" },
+      fgs_attempted_per_game: { name: "FGA", type: "number" },
+      fgs_made_per_game: { name: "FGM", type: "number" },
+      threes_attempted_per_game: { name: "3PA", type: "number" },
+      threes_made_per_game: { name: "3PM", type: "number" },
+      fts_attempted_per_game: { name: "FTA", type: "number" },
+      fts_made_per_game: { name: "FTM", type: "number" },
+      turnovers_per_game: { name: "TOV", type: "number" },
+      offensive_rebounds_per_game: { name: "OREB", type: "number" },
+      fouls_per_game: { name: "FLS", type: "number" },
+      minutes_per_game: { name: "MIN", type: "number" },
+      fg_pct: { name: "FG %", type: "number" },
+      threes_pct: { name: "3P %", type: "number" },
+      ft_pct: { name: "FT %", type: "number" },
+      __name__: { name: "Statline", type: "number" }
+    },
+    team_statline: {
+      points: { name: "Total PTS", type: "number" },
+      rebounds: { name: "Total REB", type: "number" },
+      assists: { name: "Total AST", type: "number" },
+      steals: { name: "Total STL", type: "number" },
+      blocks: { name: "Total BLK", type: "number" },
+      fgs_attempted: { name: "Total FGA", type: "number" },
+      fgs_made: { name: "Total FGM", type: "number" },
+      threes_attempted: { name: "Total 3PA", type: "number" },
+      threes_made: { name: "Total 3PM", type: "number" },
+      fts_attempted: { name: "Total FTA", type: "number" },
+      fts_made: { name: "Total FTM", type: "number" },
+      turnovers: { name: "Total TOV", type: "number" },
+      offensive_rebounds: { name: "Total OREB", type: "number" },
+      fouls: { name: "Total FLS", type: "number" },
+      games_played: { name: "GP", type: "number" },
+      minutes: { name: "Total MIN", type: "number" },
+      points_per_game: { name: "PTS", type: "number" },
+      rebounds_per_game: { name: "REB", type: "number" },
+      assists_per_game: { name: "AST", type: "number" },
+      steals_per_game: { name: "STL", type: "number" },
+      blocks_per_game: { name: "BLK", type: "number" },
+      fgs_attempted_per_game: { name: "FGA", type: "number" },
+      fgs_made_per_game: { name: "FGM", type: "number" },
+      threes_attempted_per_game: { name: "3PA", type: "number" },
+      threes_made_per_game: { name: "3PM", type: "number" },
+      fts_attempted_per_game: { name: "FTA", type: "number" },
+      fts_made_per_game: { name: "FTM", type: "number" },
+      turnovers_per_game: { name: "TOV", type: "number" },
+      offensive_rebounds_per_game: { name: "OREB", type: "number" },
+      fouls_per_game: { name: "FLS", type: "number" },
+      minutes_per_game: { name: "MIN", type: "number" },
+      fg_pct: { name: "FG %", type: "number" },
+      threes_pct: { name: "3P %", type: "number" },
+      ft_pct: { name: "FT %", type: "number" },
+      __name__: { name: "Statline", type: "number" }
+    },
+    player_shot_statline: {
+      fgs_attempted_very_tight: {
+        name: "Total FGA - very tightly contended",
+        type: "number"
+      },
+      fgs_made_very_tight: {
+        name: "Total FGM - very tightly contended",
+        type: "number"
+      },
+      threes_attempted_very_tight: {
+        name: "Total 3PA - very tightly contended",
+        type: "number"
+      },
+      threes_made_very_tight: {
+        name: "Total 3PM - very tightly contended",
+        type: "number"
+      },
+      fgs_attempted_tight: {
+        name: "Total FGA - tightly contended",
+        type: "number"
+      },
+      fgs_made_tight: { name: "Total FGM - tightly contended", type: "number" },
+      threes_attempted_tight: {
+        name: "Total 3PA - tightly contended",
+        type: "number"
+      },
+      threes_made_tight: {
+        name: "Total 3PM - tightly contended",
+        type: "number"
+      },
+      fgs_attempted_open: { name: "Total FGA - open", type: "number" },
+      fgs_made_open: { name: "Total FGM - open", type: "number" },
+      threes_attempted_open: { name: "Total 3PA - open", type: "number" },
+      threes_made_open: { name: "Total 3PM - open", type: "number" },
+      fgs_attempted_wide_open: {
+        name: "Total FGA - wide open",
+        type: "number"
+      },
+      fgs_made_wide_open: { name: "Total FGM - wide open", type: "number" },
+      threes_attempted_wide_open: {
+        name: "Total 3PA - wide open",
+        type: "number"
+      },
+      threes_made_wide_open: { name: "Total 3PM - wide open", type: "number" },
+      fg_pct_very_tight: {
+        name: "FG % - very tightly contended",
+        type: "number"
+      },
+      threes_pct_very_tight: {
+        name: "3P % - very tightly contended",
+        type: "number"
+      },
+      fg_pct_tight: { name: "FG % - tightly contended", type: "number" },
+      threes_pct_tight: { name: "3P % - tightly contended", type: "number" },
+      fg_pct_open: { name: "FG % - open", type: "number" },
+      threes_pct_open: { name: "3P % - open", type: "number" },
+      fg_pct_wide_open: { name: "FG % - wide open", type: "number" },
+      threes_pct_wide_open: { name: "3P % - wide open", type: "number" },
+      games_played: { name: "GP", type: "number" },
+      fgs_attempted_very_tight_per_game: {
+        name: "FGA - very tightly contended",
+        type: "number"
+      },
+      fgs_made_very_tight_per_game: {
+        name: "FGM - very tightly contended",
+        type: "number"
+      },
+      threes_attempted_very_tight_per_game: {
+        name: "3PA - very tightly contended",
+        type: "number"
+      },
+      threes_made_very_tight_per_game: {
+        name: "3PM - very tightly contended",
+        type: "number"
+      },
+      fgs_attempted_tight_per_game: {
+        name: "FGA - tightly contended",
+        type: "number"
+      },
+      fgs_made_tight_per_game: {
+        name: "FGM - tightly contended",
+        type: "number"
+      },
+      threes_attempted_tight_per_game: {
+        name: "3PA - tightly contended",
+        type: "number"
+      },
+      threes_made_tight_per_game: {
+        name: "3PM - tightly contended",
+        type: "number"
+      },
+      fgs_attempted_open_per_game: { name: "FGA - open", type: "number" },
+      fgs_made_open_per_game: { name: "FGM - open", type: "number" },
+      threes_attempted_open_per_game: { name: "3PA - open", type: "number" },
+      threes_made_open_per_game: { name: "3PM - open", type: "number" },
+      fgs_attempted_wide_open_per_game: {
+        name: "FGA - wide open",
+        type: "number"
+      },
+      fgs_made_wide_open_per_game: { name: "FGM - wide open", type: "number" },
+      threes_attempted_wide_open_per_game: {
+        name: "3PA - wide open",
+        type: "number"
+      },
+      threes_made_wide_open_per_game: {
+        name: "3PM - wide open",
+        type: "number"
+      },
+      mid_range_attempted: { name: "Total FGA - mid range", type: "number" },
+      mid_range_made: { name: "Total FGM - mid range", type: "number" },
+      mid_range_pct: { name: "FG % - mid range", type: "number" },
+      mid_range_attempted_per_game: { name: "FGA - mid range", type: "number" },
+      mid_range_made_per_game: { name: "FGM - mid range", type: "number" },
+      paint_attempted: { name: "Total FGA - paint", type: "number" },
+      paint_made: { name: "Total FGM - paint", type: "number" },
+      paint_pct: { name: "FG % - paint", type: "number" },
+      paint_attempted_per_game: { name: "FGA - paint", type: "number" },
+      paint_made_per_game: { name: "FGM - paint", type: "number" },
+      __name__: { name: "Shot Stats", type: "number" }
+    },
+    __name__: { name: "TODO", type: "TODO" }
   }
 };
