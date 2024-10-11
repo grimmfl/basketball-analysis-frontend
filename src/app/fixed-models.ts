@@ -6,7 +6,9 @@ export enum ComparatorOperator {
   Greater,
   GreaterEqual,
   IsTrue,
-  IsFalse
+  IsFalse,
+  Less = 8,
+  LessEqual = 9
 }
 
 export interface SearchComparator {

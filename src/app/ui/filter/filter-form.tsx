@@ -123,7 +123,7 @@ function getOperators() {
   }
 
   return zip(nonValueMembers, valueMembers).map((v) => ({
-    name: v.item1,
+    name: v.item1.split(/(?<![A-Z])(?=[A-Z])/).join(" "),
     value: v.item2
   }));
 }
