@@ -52,6 +52,7 @@ export default function FilterSelect<T extends Model>({
   const [data, setData] = useState([] as T[]);
   const [selected, setSelected] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const defaultValue =
     defaultId != null ? (data.find((d) => d.id === defaultId) ?? null) : null;
@@ -106,10 +107,13 @@ export default function FilterSelect<T extends Model>({
     "bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none ";
   inputClassName += inputWidth ?? "min-w-full";
 
+  let dropdownClassName =
+    "absolute z-1 border border-gray-900 shadow-xl shadow-gray-800 bg-black overflow-y-auto h-72 ";
+  dropdownClassName += inputWidth ?? "w-full";
+
   return (
-    <div>
+    <div className="relative">
       <input
-        data-tooltip-id="tooltip"
         className={inputClassName}
         placeholder="Search ..."
         value={
@@ -125,49 +129,39 @@ export default function FilterSelect<T extends Model>({
           setSearchValue("");
           search("");
           setSelected(null);
+          setShowDropdown(true);
         }}
+        onBlur={(evt) => setTimeout(() => setShowDropdown(false), 200)}
         disabled={disabled}
         onChange={(evt) => {
           setSearchValue(evt.target.value);
           search(evt.target.value);
         }}
       ></input>
-      <Tooltip
-        openEvents={{ focus: true, mouseover: false }}
-        closeEvents={{ blur: true, mouseout: false }}
-        id="tooltip"
-        place="bottom"
-        clickable
-        style={{
-          backgroundColor: "var(--background)",
-          color: "var(--foreground)",
-          padding: 0
-        }}
-        border="1px solid gray"
-        noArrow={true}
-        ref={tooltip}
+      <div
+        className={clsx(dropdownClassName, {
+          "display-none": !showDropdown,
+          block: showDropdown
+        })}
       >
-        <div className="flex-col h-72 overflow-y-auto bg-black">
-          {isLoading ? (
-            <Spinner></Spinner>
-          ) : (
-            data.map((t, idx) => (
-              <div key={idx}>
-                <button
-                  onClick={() => {
-                    setSelected(t);
-                    onChange(t.id);
-                    tooltip.current?.close();
-                  }}
-                  className="border-b border-gray-700 p-3 min-w-full hover:bg-gray-900"
-                >
-                  {config.selector(t)}
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-      </Tooltip>
+        {isLoading ? (
+          <Spinner></Spinner>
+        ) : (
+          data.map((t, idx) => (
+            <a
+              onClick={(evt) => {
+                setSelected(t);
+                onChange(t.id);
+                setShowDropdown(false);
+                evt.stopPropagation();
+              }}
+              className="border-b border-gray-700 p-3 hover:bg-gray-900 block"
+            >
+              {config.selector(t)}
+            </a>
+          ))
+        )}
+      </div>
     </div>
   );
 }

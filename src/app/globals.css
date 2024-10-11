@@ -154,3 +154,12 @@ body {
 .w-2\/5 {
   width: 40%;
 }
+
+.filter-select-content {
+  position: absolute;
+  z-index: 1;
+}
+
+.display-none {
+  display: none;
+}
