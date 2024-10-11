@@ -153,8 +153,6 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     { name: "No", value: ComparatorOperator.IsFalse }
   ];
 
-  console.log(availableFilters);
-
   const defaultFilters = config.defaultFilters ?? [];
   let defaultGroups = availableFilters.filter((g) =>
     g.filters.some((f) => defaultFilters.some((df) => f.key === df.key))

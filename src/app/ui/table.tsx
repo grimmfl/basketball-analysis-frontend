@@ -68,7 +68,6 @@ export default function Table<T>({
   }
 
   function changeSearchValue(value: string) {
-    console.log(value);
     if (!config.showSearch) return;
 
     const newFilter = filters.filter((f) => f.name !== "search");

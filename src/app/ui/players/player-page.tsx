@@ -132,6 +132,13 @@ export default function () {
               sortable: true
             },
             {
+              name: "TOV",
+              column: "statline.turnovers_per_game",
+              alignment: ColumnAlignment.Right,
+              format: (v) => round(v, 2),
+              sortable: true
+            },
+            {
               name: "MIN",
               column: "statline.minutes_per_game",
               alignment: ColumnAlignment.Right,
