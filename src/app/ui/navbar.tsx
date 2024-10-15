@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import clsx from "clsx";
 
 interface NavbarItem {
   path: string;
@@ -17,13 +18,21 @@ const items: NavbarItem[] = [
 export default function Navbar() {
   const router = useRouter();
 
+  const pathname = usePathname();
+  const currentPath = "/" + pathname.substring(1).split("/")[0];
+
   return (
-    <div className="flex border-b border-b-gray-900 px-5">
+    <div className="flex border-b bg-nav border-background px-5 border-collapse">
       {items.map((i, idx) => (
         <button
           key={idx}
           onClick={() => router.push(i.path)}
-          className="py-2 w-40 px-5 border border-gray-900 hover:bg-gray-900"
+          className={clsx(
+            "py-3 w-40 px-5 border-x border-background hover:bg-background",
+            {
+              "bg-background": i.path === currentPath
+            }
+          )}
         >
           {i.name}
         </button>

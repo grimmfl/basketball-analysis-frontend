@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import Modal from "react-modal";
 import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
+import { Background } from "@/app/globals";
 
 export interface FilterModalConfig extends FilterConfig {
   onClose: () => void;
@@ -29,7 +30,7 @@ const customStyles = {
     width: "50%",
     height: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "rgb(0, 0, 0)",
+    backgroundColor: Background,
     border: "1px solid rgb(50, 50, 50)"
   }
 };
@@ -64,7 +65,7 @@ export default function FilterModal({ config }: { config: FilterModalConfig }) {
               ...children,
               createElement("div", {
                 className:
-                  "absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-highlight border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900",
+                  "absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-highlight border-2 border-white rounded-full -top-2 -end-2 border-gray",
                 children: actualFilters.length,
                 key: 0
               })

@@ -293,7 +293,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                     <td>
                       <select
                         disabled={!filterIsActive(f)}
-                        className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40"
+                        className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40"
                         onChange={(evt) =>
                           setFilterOperator(f, evt.target.value)
                         }
@@ -313,7 +313,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                       {f.type === "enum" ? (
                         <select
                           disabled={!filterIsActive(f)}
-                          className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
+                          className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
                           defaultValue={f.comparator.value}
                           onChange={(evt) =>
                             setFilterValue(f, evt.target.value)
@@ -331,7 +331,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                         <input
                           type={f.type === "number" ? "number" : "text"}
                           disabled={!filterIsActive(f)}
-                          className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
+                          className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
                           defaultValue={f.comparator.value}
                           onChange={(evt) =>
                             setFilterValue(f, evt.target.value)

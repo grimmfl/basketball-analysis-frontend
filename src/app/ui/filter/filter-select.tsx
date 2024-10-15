@@ -2,16 +2,18 @@ import {
   ComparatorOperator,
   Model,
   OrderDir,
+  SearchFilter,
   SearchRequest
 } from "@/app/fixed-models";
 import { useEffect, useRef, useState } from "react";
-import { Tooltip, TooltipRefProps } from "react-tooltip";
-import { Team } from "@/app/models";
+import { TooltipRefProps } from "react-tooltip";
+import { Player, Team } from "@/app/models";
 import Spinner from "@/app/ui/spinner";
 import clsx from "clsx";
 
 export enum FilterSelectModel {
-  Team
+  Team,
+  Player
 }
 
 interface FilterSelectConfig<T extends Model> {
@@ -27,6 +29,12 @@ const filterSelectConfigs: FilterSelectConfig<any>[] = [
     searchUrl: "teams/search",
     orderBy: "city",
     selector: (t: Team) => `${t.city} ${t.name}`
+  },
+  {
+    model: FilterSelectModel.Player,
+    searchUrl: "players/search",
+    orderBy: "first_name",
+    selector: (p: Player) => `${p.first_name} ${p.last_name}`
   }
 ];
 
@@ -35,14 +43,21 @@ export default function FilterSelect<T extends Model>({
   onChange,
   disabled,
   defaultId,
-  inputWidth
+  inputWidth,
+  filters,
+  placeholder
 }: {
   model: FilterSelectModel;
   onChange: (id: number) => void;
   disabled?: boolean;
   defaultId?: number;
   inputWidth?: string;
+  filters?: SearchFilter[][];
+  placeholder?: string;
 }) {
+  filters ??= [];
+  placeholder ??= "Search ...";
+
   const config = filterSelectConfigs.find((c) => c.model === model);
 
   if (config == null) return <span></span>;
@@ -62,28 +77,28 @@ export default function FilterSelect<T extends Model>({
   const request: SearchRequest = {
     order_by: config.orderBy,
     order_dir: OrderDir.Asc,
-    filter: [
+    filter: filters.concat([
       [
         {
           attribute: "search",
           comparator: { operator: ComparatorOperator.Contains, value: search }
         }
       ]
-    ],
+    ]),
     take: -1
   };
 
   function search(value: string) {
     setIsLoading(true);
 
-    request.filter = [
+    request.filter = filters!.concat([
       [
         {
           attribute: "search",
           comparator: { operator: ComparatorOperator.Contains, value: value }
         }
       ]
-    ];
+    ]);
 
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/${config!.searchUrl}`, {
       method: "POST",
@@ -104,18 +119,18 @@ export default function FilterSelect<T extends Model>({
   }, []);
 
   let inputClassName =
-    "bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none ";
+    "bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none ";
   inputClassName += inputWidth ?? "min-w-full";
 
   let dropdownClassName =
-    "absolute z-1 border border-gray-900 shadow-xl shadow-gray-800 bg-black overflow-y-auto h-72 ";
+    "absolute z-1 border border-gray-900 shadow-xl shadow-gray-800 bg-background overflow-y-auto h-72 ";
   dropdownClassName += inputWidth ?? "w-full";
 
   return (
     <div className="relative">
       <input
         className={inputClassName}
-        placeholder="Search ..."
+        placeholder={placeholder}
         value={
           selected == null
             ? searchValue.length > 0
@@ -155,7 +170,7 @@ export default function FilterSelect<T extends Model>({
                 setShowDropdown(false);
                 evt.stopPropagation();
               }}
-              className="border-b border-gray-700 p-3 hover:bg-gray-900 block"
+              className="border-b border-gray-700 p-3 hover:bg-secondary block"
             >
               {config.selector(t)}
             </a>

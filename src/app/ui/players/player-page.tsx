@@ -190,40 +190,40 @@ export default function () {
         <Spinner></Spinner>
       ) : (
         <div className="flex justify-between mb-4">
-          <table className="border border-gray-900">
+          <table className="border border-black">
             <tbody>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold w-40">Name</td>
                 <td className="px-3 text-right">
                   {player.first_name} {player.last_name}
                 </td>
               </tr>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold">Position</td>
                 <td className="px-3 text-right">
                   {player.current_roster?.position}
                 </td>
               </tr>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold">Team</td>
                 <td className="px-3 text-right">
                   {player.current_roster?.roster?.team?.city}{" "}
                   {player.current_roster?.roster?.team?.name}
                 </td>
               </tr>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold">Age</td>
                 <td className="px-3 text-right">
                   {player.current_roster?.age}
                 </td>
               </tr>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold">Height</td>
                 <td className="px-3 text-right">
                   {displayHeight(player.current_roster?.height)}
                 </td>
               </tr>
-              <tr className="border-b border-gray-900">
+              <tr className="border-b border-black">
                 <td className="px-3 font-bold">Weight</td>
                 <td className="px-3 text-right">
                   {player.current_roster?.weight} lbs

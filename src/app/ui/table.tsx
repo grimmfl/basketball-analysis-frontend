@@ -201,7 +201,7 @@ export default function Table<T>({
       {config.showSearch ? (
         <input
           placeholder="Search ..."
-          className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none mb-5"
+          className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none mb-5"
           onChange={(evt) => changeSearchValue(evt.target.value)}
         ></input>
       ) : (
@@ -217,7 +217,7 @@ export default function Table<T>({
           <div className="h-table overflow-y-auto">
             <table className="min-w-full" id="table" ref={tableRef}>
               <thead className="position-sticky bg-secondary border-b-4 border-b-gray-900">
-                <tr className="text-left border-b-4 border-b-gray-900">
+                <tr className="text-left border-b-4 border-b-black">
                   {config.columns?.map((c, idx) => (
                     <th
                       key={idx}
@@ -251,8 +251,8 @@ export default function Table<T>({
                   data.map((entry: T, idx) => (
                     <tr
                       key={idx}
-                      className={clsx("border-b border-b-gray-900", {
-                        "hover:cursor-pointer hover:bg-gray-900":
+                      className={clsx("border-b border-b-black", {
+                        "hover:cursor-pointer hover:bg-secondary":
                           config.onRowClick != null
                       })}
                       onClick={() =>
@@ -278,7 +278,7 @@ export default function Table<T>({
           className="w-2/5 max-h-screen h-screen"
         >
           <button
-            className="border border-gray-700 p-3 min-w-full mb-2 hover:bg-gray-900"
+            className="border border-gray-700 p-3 min-w-full mb-2 hover:bg-secondary"
             onClick={() => search(searchRequest)}
           >
             Apply Filters

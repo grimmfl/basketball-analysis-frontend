@@ -3,18 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #fdfff7;
+  /*--background: #F7F3E3;*/
   --foreground: #171717;
-  --highlight: #12aaff;
-  --secondary: #0d2d54;
+  --highlight: #3c91e6;
+  --secondary: #a2cdd3;
+  /*--secondary: #6A5B6E;*/
+  --nav: #f8f8f8;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0e1116;
     --foreground: #ededed;
+    --highlight: #3c91e6;
     --rt-color-white: #fff;
     --rt-color-dark: #0a0a0a;
+    --secondary: #1d3354;
+    --nav: #000000;
   }
 }
 
@@ -125,6 +131,13 @@ body {
   background-color: var(--secondary);
 }
 
+.hover\:bg-secondary:hover {
+  background-color: var(--secondary);
+}
+
+.bg-background {
+  background: var(--background);
+}
 .overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
@@ -162,4 +175,12 @@ body {
 
 .display-none {
   display: none;
+}
+
+.border-background {
+  border-color: var(--background);
+}
+
+.bg-nav {
+  background-color: var(--nav);
 }

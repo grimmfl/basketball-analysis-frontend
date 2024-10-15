@@ -146,7 +146,7 @@ export default function () {
   return (
     <div>
       <select
-        className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40 mb-5"
+        className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40 mb-5"
         onChange={(evt) => setStat(evt.target.value)}
       >
         {StatOptions.map((o, idx) => (
@@ -157,7 +157,7 @@ export default function () {
       </select>
 
       <select
-        className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
+        className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
         onChange={(evt) => setSeason(evt.target.value)}
       >
         {SeasonOptions.map((o, idx) => (
@@ -171,7 +171,7 @@ export default function () {
         type="number"
         min="0"
         defaultValue={10}
-        className="bg-black border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
+        className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
         placeholder="Top "
         onChange={(evt) => setTake(evt.target.value)}
       ></input>

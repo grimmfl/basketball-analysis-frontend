@@ -32,7 +32,13 @@ import FilterModal, { FilterModalConfig } from "@/app/ui/filter/filter-modal";
 import { Filter } from "@/app/ui/filter/filter-form";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import Spinner from "@/app/ui/spinner";
-import { Background, Highlight } from "@/app/globals";
+import {
+  Background,
+  Contrast,
+  Highlight,
+  NegativeBackground
+} from "@/app/globals";
+import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
 
 interface LeagueAverage {
   leagueStatline: LeagueSeasonStatline;
@@ -125,12 +131,13 @@ export default function Example() {
     }
   ] as Filter[]);
   const [isLoading, setIsLoading] = useState(false);
+  const [highlightPlayer, setHighlightPlayer] = useState(0);
 
   const filterConfig: FilterModalConfig = {
     tableName: "PlayerSeasonTeamStatline",
     onChange: (f) => setFilters(f),
     button: (
-      <button className="relative border border-gray-700 p-3 min-w-full mb-2 hover:bg-gray-900">
+      <button className="relative border border-gray-700 p-3 min-w-full mb-2 hover:bg-secondary">
         <span className="flex justify-center">
           <AdjustmentsHorizontalIcon className="w-6 mr-4" />
           Filter
@@ -271,6 +278,16 @@ export default function Example() {
     }, 300);
   }, [tooltip.hideTooltip]);
 
+  const filterSelectFilters = [
+    // TODO this will only work for season = current season
+    [
+      {
+        attribute: "current_roster",
+        comparator: { operator: ComparatorOperator.IsSet, value: 0 }
+      }
+    ]
+  ];
+
   return width < 10 ? null : (
     <div className="flex">
       {isLoading ? (
@@ -321,8 +338,20 @@ export default function Example() {
                   key={`point-${i}`}
                   cx={xScale(point.x)}
                   cy={yScale(point.y)}
-                  r={point.isLeagueAverage ? 5 : 4}
-                  fill={point.isLeagueAverage ? "white" : Highlight}
+                  r={
+                    point.isLeagueAverage
+                      ? 5
+                      : point.statline?.player_id === highlightPlayer
+                        ? 6
+                        : 4
+                  }
+                  fill={
+                    point.isLeagueAverage
+                      ? NegativeBackground
+                      : point.statline?.player_id === highlightPlayer
+                        ? Contrast
+                        : Highlight
+                  }
                 />
               ))}
             </Group>
@@ -369,10 +398,18 @@ export default function Example() {
       )}
 
       <div className="flex-col ml-10">
+        <div className="mb-10">
+          <FilterSelect
+            model={FilterSelectModel.Player}
+            onChange={(p) => setHighlightPlayer(p)}
+            filters={filterSelectFilters}
+            placeholder={"Highlight ..."}
+          ></FilterSelect>
+        </div>
         <div>
           <label className="ml-1 text-xs">X - Axis</label>
           <select
-            className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 min-w-full mb-5"
+            className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 min-w-full mb-5"
             onChange={(evt) => setXAxis(evt.target.value)}
             defaultValue={xAxis}
           >
@@ -387,7 +424,7 @@ export default function Example() {
         <div>
           <label className="ml-1 text-xs">Y - Axis</label>
           <select
-            className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 min-w-full mb-5"
+            className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 min-w-full mb-5"
             defaultValue={yAxis}
             onChange={(evt) => setYAxis(evt.target.value)}
           >
@@ -402,7 +439,7 @@ export default function Example() {
         <div>
           <label className="ml-1 text-xs">Season</label>
           <select
-            className="webkit-none bg-black rounded-none border-b border-b-gray-700 p-3 min-w-full"
+            className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 min-w-full"
             onChange={(evt) => {
               setSeason(evt.target.value);
               search(evt.target.value);
