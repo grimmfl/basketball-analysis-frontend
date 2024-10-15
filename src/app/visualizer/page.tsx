@@ -303,7 +303,7 @@ export default function Example() {
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseLeave}
           >
-            <rect fill={Background} width={width} height={height} rx={14} />
+            <rect fill={Background()} width={width} height={height} rx={14} />
 
             <Grid
               xScale={xScale}
@@ -347,10 +347,10 @@ export default function Example() {
                   }
                   fill={
                     point.isLeagueAverage
-                      ? NegativeBackground
+                      ? NegativeBackground()
                       : point.statline?.player_id === highlightPlayer
-                        ? Contrast
-                        : Highlight
+                        ? Contrast()
+                        : Highlight()
                   }
                 />
               ))}

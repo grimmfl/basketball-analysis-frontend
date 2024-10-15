@@ -1,5 +1,5 @@
 import { LinePath } from "@visx/shape";
-import { Background, White } from "@/app/globals";
+import { Background, NegativeBackground } from "@/app/globals";
 import { Group } from "@visx/group";
 import React from "react";
 
@@ -18,7 +18,7 @@ export default function Zones({
     <Group>
       {/* Left Corner */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         z={3}
@@ -31,7 +31,7 @@ export default function Zones({
       />
       {/* Right Corner */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -43,7 +43,7 @@ export default function Zones({
       />
       {/* Right Mid */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -55,7 +55,7 @@ export default function Zones({
       />
       {/* Right Center */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -67,7 +67,7 @@ export default function Zones({
       />
       {/* Left Center */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -79,7 +79,7 @@ export default function Zones({
       />
       {/* Left Mid */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -91,7 +91,7 @@ export default function Zones({
       />
       {/* Left 3PT */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -104,7 +104,7 @@ export default function Zones({
       />
       {/* Right 3PT */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -117,7 +117,7 @@ export default function Zones({
       />
       {/* Right 3PT */}
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         strokeDasharray={"1,5"}
         data={[
@@ -128,7 +128,7 @@ export default function Zones({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <rect
-        fill={Background}
+        fill={Background()}
         x={xScale(-80)}
         y={yScale(-50)}
         width={radiusXScale(160)}

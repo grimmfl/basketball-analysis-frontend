@@ -1,9 +1,8 @@
 import { Group } from "@visx/group";
 import { LinePath } from "@visx/shape";
-import { Background, White } from "@/app/globals";
+import { Background, NegativeBackground } from "@/app/globals";
 import React from "react";
 import { Point } from "@visx/point";
-import Zones from "@/app/ui/shot-chart/zones";
 
 function threePointLine(x: number) {
   return Math.sqrt(Math.pow(237.5, 2) - Math.pow(x, 2));
@@ -27,7 +26,7 @@ export default function Court({
   return (
     <Group>
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-250, -50],
@@ -37,7 +36,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-220, -50],
@@ -47,7 +46,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [220, -50],
@@ -57,7 +56,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-30, -10],
@@ -69,13 +68,13 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(0)}
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         r={(radiusXScale(10) + radiusYScale(10)) / 2}
         fillOpacity={0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-250, -50],
@@ -85,7 +84,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [250, -50],
@@ -95,7 +94,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-250, 470],
@@ -107,7 +106,7 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(470)}
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         r={(radiusXScale(20) + radiusYScale(20)) / 2}
         fillOpacity={0}
@@ -115,7 +114,7 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(470)}
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         r={(radiusXScale(60) + radiusYScale(60)) / 2}
         fillOpacity={0}
@@ -123,12 +122,12 @@ export default function Court({
       <rect
         width={radiusXScale(120)}
         height={radiusYScale(65)}
-        fill={Background}
+        fill={Background()}
         x={xScale(-60)}
         y={yScale(471)}
       ></rect>
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-80, -50],
@@ -138,7 +137,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [80, -50],
@@ -148,7 +147,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={[
           [-80, 140],
@@ -158,7 +157,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={White}
+        stroke={NegativeBackground()}
         strokeWidth={2}
         data={threePointCircle}
         x={(d) => xScale(d.x) ?? 0}

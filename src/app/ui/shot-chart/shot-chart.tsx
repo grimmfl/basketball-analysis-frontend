@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Shot } from "@/app/models";
 import { scaleLinear } from "@visx/scale";
 import { Highlight, SecondaryAsTransparent } from "@/app/globals";
@@ -89,7 +89,7 @@ export default function ShotChart({
               cx={xScale(shot.loc_x)}
               cy={yScale(shot.loc_y)}
               r={shotRadius}
-              fill={shot.shot_made ? Highlight : SecondaryAsTransparent}
+              fill={shot.shot_made ? Highlight() : SecondaryAsTransparent}
             />
           ))}
           <Court

@@ -30,7 +30,7 @@ const customStyles = {
     width: "50%",
     height: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: Background,
+    backgroundColor: Background(),
     border: "1px solid rgb(50, 50, 50)"
   }
 };
