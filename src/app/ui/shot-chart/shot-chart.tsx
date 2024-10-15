@@ -89,7 +89,7 @@ export default function ShotChart({
               cx={xScale(shot.loc_x)}
               cy={yScale(shot.loc_y)}
               r={shotRadius}
-              fill={shot.shot_made ? Highlight() : SecondaryAsTransparent}
+              fill={shot.shot_made ? Highlight : SecondaryAsTransparent}
             />
           ))}
           <Court

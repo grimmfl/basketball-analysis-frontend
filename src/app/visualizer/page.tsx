@@ -33,10 +33,11 @@ import { Filter } from "@/app/ui/filter/filter-form";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import Spinner from "@/app/ui/spinner";
 import {
-  Background,
+  BackgroundDark,
+  BackgroundLight,
   Contrast,
   Highlight,
-  NegativeBackground
+  useDarkMode
 } from "@/app/globals";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
 
@@ -115,6 +116,7 @@ export default function Example() {
   const maxX = width - marginX;
   const maxY = height - marginY;
 
+  const leagueAverageColor = useDarkMode() ? BackgroundLight : BackgroundDark;
   const [data, setData] = useState([] as PlayerSeasonTeamStatline[]);
   const [xAxis, setXAxis] = useState("statline.threes_attempted_per_game");
   const [yAxis, setYAxis] = useState("statline.threes_pct");
@@ -132,6 +134,8 @@ export default function Example() {
   ] as Filter[]);
   const [isLoading, setIsLoading] = useState(false);
   const [highlightPlayer, setHighlightPlayer] = useState(0);
+
+  const background = useDarkMode() ? BackgroundDark : BackgroundLight;
 
   const filterConfig: FilterModalConfig = {
     tableName: "PlayerSeasonTeamStatline",
@@ -303,7 +307,7 @@ export default function Example() {
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseLeave}
           >
-            <rect fill={Background()} width={width} height={height} rx={14} />
+            <rect fill={background} width={width} height={height} rx={14} />
 
             <Grid
               xScale={xScale}
@@ -312,7 +316,7 @@ export default function Example() {
               height={maxY}
               numTicksRows={getTicks(points, (p) => p.y)}
               numTicksColumns={getTicks(points, (p) => p.x)}
-              stroke="white"
+              stroke={leagueAverageColor}
               strokeOpacity={0.15}
             />
             <AxisBottom
@@ -347,10 +351,10 @@ export default function Example() {
                   }
                   fill={
                     point.isLeagueAverage
-                      ? NegativeBackground()
+                      ? leagueAverageColor
                       : point.statline?.player_id === highlightPlayer
-                        ? Contrast()
-                        : Highlight()
+                        ? Contrast
+                        : Highlight
                   }
                 />
               ))}

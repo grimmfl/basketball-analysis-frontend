@@ -1,6 +1,6 @@
 import { Group } from "@visx/group";
 import { LinePath } from "@visx/shape";
-import { Background, NegativeBackground } from "@/app/globals";
+import { BackgroundDark, BackgroundLight, useDarkMode } from "@/app/globals";
 import React from "react";
 import { Point } from "@visx/point";
 
@@ -23,10 +23,13 @@ export default function Court({
   radiusXScale: any;
   radiusYScale: any;
 }) {
+  const strokes = useDarkMode() ? BackgroundLight : BackgroundDark;
+  const background = useDarkMode() ? BackgroundDark : BackgroundLight;
+
   return (
     <Group>
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-250, -50],
@@ -36,7 +39,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-220, -50],
@@ -46,7 +49,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [220, -50],
@@ -56,7 +59,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-30, -10],
@@ -68,13 +71,13 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(0)}
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         r={(radiusXScale(10) + radiusYScale(10)) / 2}
         fillOpacity={0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-250, -50],
@@ -84,7 +87,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [250, -50],
@@ -94,7 +97,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-250, 470],
@@ -106,7 +109,7 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(470)}
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         r={(radiusXScale(20) + radiusYScale(20)) / 2}
         fillOpacity={0}
@@ -114,7 +117,7 @@ export default function Court({
       <circle
         cx={xScale(0)}
         cy={yScale(470)}
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         r={(radiusXScale(60) + radiusYScale(60)) / 2}
         fillOpacity={0}
@@ -122,12 +125,12 @@ export default function Court({
       <rect
         width={radiusXScale(120)}
         height={radiusYScale(65)}
-        fill={Background()}
+        fill={background}
         x={xScale(-60)}
         y={yScale(471)}
       ></rect>
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-80, -50],
@@ -137,7 +140,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [80, -50],
@@ -147,7 +150,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={[
           [-80, 140],
@@ -157,7 +160,7 @@ export default function Court({
         y={(d) => yScale(d[1]) ?? 0}
       />
       <LinePath
-        stroke={NegativeBackground()}
+        stroke={strokes}
         strokeWidth={2}
         data={threePointCircle}
         x={(d) => xScale(d.x) ?? 0}
