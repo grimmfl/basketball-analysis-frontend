@@ -146,7 +146,9 @@ function getFilterSelectModel(filter: Filter): FilterSelectModel | null {
 export default function FilterForm({ config }: { config: FilterConfig }) {
   const expandGroups = config.expandGroups ?? false;
 
-  const availableFilters = resolveTableFilters(config.tableName);
+  const allFilters = resolveTableFilters(config.tableName);
+
+  const [availableFilters, setAvailableFilters] = useState(allFilters);
   const filterOperators = getOperators();
   const booleanOperators = [
     { name: "Yes", value: ComparatorOperator.IsTrue },
@@ -224,139 +226,168 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     config.onChange(filters);
   }
 
+  function searchFilters(value: string) {
+    value = value.toLowerCase();
+
+    const groups = allFilters
+      .map((g) => ({
+        ...g,
+        filters: g.filters.filter(
+          (f) =>
+            f.name.toLowerCase().includes(value) ||
+            f.key.toLowerCase().includes(value)
+        )
+      }))
+      .filter((g) => g.filters.length > 0);
+    setAvailableFilters(groups);
+
+    //const totalFilterCount = groups.reduce((prev, curr) => prev + curr.filters.length, 0);
+    //
+    //if (totalFilterCount <= 10) {
+    //  setVisibleGroups(groups);
+    //}
+  }
+
   return (
-    <table>
-      <tbody>
-        {availableFilters.map((g, idx1) =>
-          visibleGroups.some((vg) => vg.name === g.name) ? (
-            [
-              <tr
-                key={`${idx1}-toggle`}
-                className="hover:cursor-pointer"
-                onClick={() => toggleFilterGroup(g)}
-              >
-                <td className="pt-5">
-                  <ChevronUpIcon className="w-4 mr-2"></ChevronUpIcon>
-                </td>
-                <td className="pt-5">{g.name}</td>
-              </tr>
-            ].concat(
-              g.filters.map((f, idx2) =>
-                // FILTER SELECT
-                f.key.includes("_id") ||
-                f.key.includes(".id") ||
-                f.key === "id" ? (
-                  <tr
-                    key={`${idx1}${idx2}`}
-                    className={clsx({
-                      "text-gray-500": !filterIsActive(f)
-                    })}
-                  >
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={filterIsActive(f)}
-                        onChange={() => toggleFilter(f)}
-                        className="mr-2"
-                      ></input>
-                    </td>
-                    <td>{f.name}</td>
-                    <td colSpan={2}>
-                      {getFilterSelectModel(f) != null ? (
-                        <FilterSelect
-                          disabled={!filterIsActive(f)}
-                          model={getFilterSelectModel(f)!}
-                          onChange={(id) => setFilterValue(f, id.toString())}
-                          defaultId={parseInt(f.comparator.value, 10)}
-                        ></FilterSelect>
-                      ) : (
-                        <span className="m-3">Not Available</span>
-                      )}
-                    </td>
-                  </tr>
-                ) : (
-                  <tr
-                    key={`${idx1}${idx2}`}
-                    className={clsx({
-                      "text-gray-500": !filterIsActive(f)
-                    })}
-                  >
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={filterIsActive(f)}
-                        onChange={() => toggleFilter(f)}
-                        className="mr-2"
-                      ></input>
-                    </td>
-                    <td className="min-w-32">{f.name}</td>
-                    <td>
-                      <select
-                        disabled={!filterIsActive(f)}
-                        className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40"
-                        onChange={(evt) =>
-                          setFilterOperator(f, evt.target.value)
-                        }
-                        defaultValue={f.comparator.operator}
-                      >
-                        {(f.type === "boolean"
-                          ? booleanOperators
-                          : filterOperators
-                        ).map((o) => (
-                          <option key={o.value} value={o.value}>
-                            {o.name}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      {f.type === "enum" ? (
+    <div>
+      <input
+        placeholder="Search Filters ..."
+        className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none"
+        onChange={(evt) => searchFilters(evt.target.value)}
+      ></input>
+      <table>
+        <tbody>
+          {availableFilters.map((g, idx1) =>
+            visibleGroups.some((vg) => vg.name === g.name) ? (
+              [
+                <tr
+                  key={`${idx1}-toggle`}
+                  className="hover:cursor-pointer"
+                  onClick={() => toggleFilterGroup(g)}
+                >
+                  <td className="pt-5">
+                    <ChevronUpIcon className="w-4 mr-2"></ChevronUpIcon>
+                  </td>
+                  <td className="pt-5">{g.name}</td>
+                </tr>
+              ].concat(
+                g.filters.map((f, idx2) =>
+                  // FILTER SELECT
+                  f.key.includes("_id") ||
+                  f.key.includes(".id") ||
+                  f.key === "id" ? (
+                    <tr
+                      key={`${idx1}${idx2}`}
+                      className={clsx({
+                        "text-gray-500": !filterIsActive(f)
+                      })}
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={filterIsActive(f)}
+                          onChange={() => toggleFilter(f)}
+                          className="mr-2"
+                        ></input>
+                      </td>
+                      <td>{f.name}</td>
+                      <td colSpan={2}>
+                        {getFilterSelectModel(f) != null ? (
+                          <FilterSelect
+                            disabled={!filterIsActive(f)}
+                            model={getFilterSelectModel(f)!}
+                            onChange={(id) => setFilterValue(f, id.toString())}
+                            defaultId={parseInt(f.comparator.value, 10)}
+                          ></FilterSelect>
+                        ) : (
+                          <span className="m-3">Not Available</span>
+                        )}
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr
+                      key={`${idx1}${idx2}`}
+                      className={clsx({
+                        "text-gray-500": !filterIsActive(f)
+                      })}
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={filterIsActive(f)}
+                          onChange={() => toggleFilter(f)}
+                          className="mr-2"
+                        ></input>
+                      </td>
+                      <td className="min-w-32">{f.name}</td>
+                      <td>
                         <select
                           disabled={!filterIsActive(f)}
-                          className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
-                          defaultValue={f.comparator.value}
+                          className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40"
                           onChange={(evt) =>
-                            setFilterValue(f, evt.target.value)
+                            setFilterOperator(f, evt.target.value)
                           }
+                          defaultValue={f.comparator.operator}
                         >
-                          {f.options.map((o, idx) => (
-                            <option key={idx} value={o.key}>
+                          {(f.type === "boolean"
+                            ? booleanOperators
+                            : filterOperators
+                          ).map((o) => (
+                            <option key={o.value} value={o.value}>
                               {o.name}
                             </option>
                           ))}
                         </select>
-                      ) : f.type === "boolean" ? (
-                        ""
-                      ) : (
-                        <input
-                          type={f.type === "number" ? "number" : "text"}
-                          disabled={!filterIsActive(f)}
-                          className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
-                          defaultValue={f.comparator.value}
-                          onChange={(evt) =>
-                            setFilterValue(f, evt.target.value)
-                          }
-                        ></input>
-                      )}
-                    </td>
-                  </tr>
+                      </td>
+                      <td>
+                        {f.type === "enum" ? (
+                          <select
+                            disabled={!filterIsActive(f)}
+                            className="webkit-none bg-background rounded-none border-b border-b-gray-700 p-3 w-40 ml-10"
+                            defaultValue={f.comparator.value}
+                            onChange={(evt) =>
+                              setFilterValue(f, evt.target.value)
+                            }
+                          >
+                            {f.options.map((o, idx) => (
+                              <option key={idx} value={o.key}>
+                                {o.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : f.type === "boolean" ? (
+                          ""
+                        ) : (
+                          <input
+                            type={f.type === "number" ? "number" : "text"}
+                            disabled={!filterIsActive(f)}
+                            className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
+                            defaultValue={f.comparator.value}
+                            onChange={(evt) =>
+                              setFilterValue(f, evt.target.value)
+                            }
+                          ></input>
+                        )}
+                      </td>
+                    </tr>
+                  )
                 )
               )
+            ) : (
+              <tr
+                key={`${idx1}toggle`}
+                className="hover:cursor-pointer"
+                onClick={() => toggleFilterGroup(g)}
+              >
+                <td className="pt-5">
+                  <ChevronDownIcon className="w-4 mr-2"></ChevronDownIcon>
+                </td>
+                <td className="pt-5">{g.name}</td>
+              </tr>
             )
-          ) : (
-            <tr
-              key={`${idx1}toggle`}
-              className="hover:cursor-pointer"
-              onClick={() => toggleFilterGroup(g)}
-            >
-              <td className="pt-5">
-                <ChevronDownIcon className="w-4 mr-2"></ChevronDownIcon>
-              </td>
-              <td className="pt-5">{g.name}</td>
-            </tr>
-          )
-        )}
-      </tbody>
-    </table>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
