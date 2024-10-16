@@ -6,12 +6,15 @@ import { getProperty, removeDuplicates, zip } from "@/app/utils";
 import { FilterType, Translations } from "@/app/translations";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
 import { Option } from "@/app/select-options";
+import { Observable } from "@/app/observable";
+import { Trigger } from "@/app/trigger";
 
 export interface FilterConfig {
   onChange: (filters: Filter[]) => void;
   tableName: string;
   defaultFilters?: Filter[];
   expandGroups?: boolean;
+  confirm$?: Trigger;
 }
 
 export interface Filter {
@@ -20,6 +23,7 @@ export interface Filter {
   comparator: SearchComparator;
   type: FilterType;
   options: Option[];
+  confirmed?: boolean;
 }
 
 interface FilterGroup {
@@ -45,7 +49,8 @@ function resolveEnumFilter(
     options: options.map((o) => ({
       name: getProperty(translations, o).name,
       key: o
-    }))
+    })),
+    confirmed: true
   };
 }
 
@@ -83,7 +88,8 @@ function resolveFilters(
             value: value.type === "string" ? "" : 0
           },
           type: value.type,
-          options: []
+          options: [],
+          confirmed: true
         });
       }
     } else {
@@ -175,6 +181,25 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
   const [filters, setFilters] = useState(defaultFilters);
   const [visibleGroups, setVisibleGroups] = useState(defaultGroups);
 
+  const sortedFilters = availableFilters.map((g) => ({
+    ...g,
+    filters: g.filters.some((f) => !f.confirmed)
+      ? g.filters
+      : g.filters.sort(
+          (a, b) => (filterIsActive(a) ? 0 : 1) - (filterIsActive(b) ? 0 : 1)
+        )
+  }));
+
+  if (config.confirm$ != null) {
+    config.confirm$.subscribe(() => {
+      const available = availableFilters.map((g) => ({
+        ...g,
+        filters: g.filters.map((f) => ({ ...f, confirmed: true }))
+      }));
+      setAvailableFilters(available);
+    });
+  }
+
   function filterIsActive(filter: Filter) {
     return filters.find((f) => f.key === filter.key) != null;
   }
@@ -188,6 +213,15 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
       newFilters = filters.concat([filter]);
     }
 
+    const available = availableFilters.map((g) => ({
+      ...g,
+      filters: g.filters.map((f) => ({
+        ...f,
+        confirmed: f.key === filter.key ? false : f.confirmed
+      }))
+    }));
+
+    setAvailableFilters(available);
     update(newFilters);
   }
 
@@ -257,7 +291,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
       ></input>
       <table>
         <tbody>
-          {availableFilters.map((g, idx1) =>
+          {sortedFilters.map((g, idx1) =>
             visibleGroups.some((vg) => vg.name === g.name) ? (
               [
                 <tr
@@ -268,7 +302,10 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                   <td className="pt-5">
                     <ChevronUpIcon className="w-4 mr-2"></ChevronUpIcon>
                   </td>
-                  <td className="pt-5">{g.name}</td>
+                  <td className="pt-5">
+                    {g.name} (
+                    {g.filters.filter((f) => filterIsActive(f)).length})
+                  </td>
                 </tr>
               ].concat(
                 g.filters.map((f, idx2) =>
@@ -286,7 +323,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                         <input
                           type="checkbox"
                           checked={filterIsActive(f)}
-                          onChange={() => toggleFilter(f)}
+                          onChange={(evt) => toggleFilter(f)}
                           className="mr-2"
                         ></input>
                       </td>
@@ -315,7 +352,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                         <input
                           type="checkbox"
                           checked={filterIsActive(f)}
-                          onChange={() => toggleFilter(f)}
+                          onChange={(evt) => toggleFilter(f)}
                           className="mr-2"
                         ></input>
                       </td>
@@ -382,7 +419,9 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                 <td className="pt-5">
                   <ChevronDownIcon className="w-4 mr-2"></ChevronDownIcon>
                 </td>
-                <td className="pt-5">{g.name}</td>
+                <td className="pt-5">
+                  {g.name} ({g.filters.filter((f) => filterIsActive(f)).length})
+                </td>
               </tr>
             )
           )}

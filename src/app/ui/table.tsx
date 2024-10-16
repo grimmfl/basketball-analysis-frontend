@@ -11,6 +11,7 @@ import { resolveProperty } from "@/app/utils";
 import Spinner from "@/app/ui/spinner";
 import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
 import { FilterType } from "@/app/translations";
+import { Trigger } from "@/app/trigger";
 
 export enum ColumnAlignment {
   Left,
@@ -46,9 +47,12 @@ export default function Table<T>({
   config: TableConfig<T>;
   heightClassName?: string;
 }) {
+  const confirmTrigger$ = new Trigger();
+
   const filterConfig: FilterConfig = {
     tableName: config.tableName,
-    onChange: (f) => setFilters(f)
+    onChange: (f) => setFilters(f),
+    confirm$: confirmTrigger$
   };
 
   function updateSearchRequest(request: SearchRequest, prop: string) {
@@ -279,7 +283,10 @@ export default function Table<T>({
         >
           <button
             className="border border-gray-700 p-3 min-w-full mb-2 hover:bg-secondary"
-            onClick={() => search(searchRequest)}
+            onClick={() => {
+              confirmTrigger$.push();
+              search(searchRequest);
+            }}
           >
             Apply Filters
           </button>

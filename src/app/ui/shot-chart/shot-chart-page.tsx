@@ -6,14 +6,20 @@ import FilterForm, { Filter, FilterConfig } from "@/app/ui/filter/filter-form";
 import { useEffect, useState } from "react";
 import { Shot } from "@/app/models";
 import { OrderDir, SearchRequest } from "@/app/fixed-models";
+import { Trigger } from "@/app/trigger";
 
 export default function ShotChartPage() {
   const { playerId } = useParams<{ playerId: string }>();
 
+  const confirmTrigger$ = new Trigger();
   const filterConfig: FilterConfig = {
-    onChange: (f) => search(f),
+    onChange: (f) => {
+      confirmTrigger$.push();
+      search(f);
+    },
     tableName: "Shot",
-    expandGroups: true
+    expandGroups: true,
+    confirm$: confirmTrigger$
   };
 
   const [data, setData] = useState([] as Shot[]);

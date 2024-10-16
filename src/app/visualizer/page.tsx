@@ -40,6 +40,8 @@ import {
   useDarkMode
 } from "@/app/globals";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
+import { Observable } from "@/app/observable";
+import { Trigger } from "@/app/trigger";
 
 interface LeagueAverage {
   leagueStatline: LeagueSeasonStatline;
@@ -137,6 +139,7 @@ export default function Example() {
 
   const background = useDarkMode() ? BackgroundDark : BackgroundLight;
 
+  const confirmTrigger$ = new Trigger();
   const filterConfig: FilterModalConfig = {
     tableName: "PlayerSeasonTeamStatline",
     onChange: (f) => setFilters(f),
@@ -148,8 +151,12 @@ export default function Example() {
         </span>
       </button>
     ),
-    onClose: () => search(),
-    defaultFilters: filters
+    onClose: () => {
+      confirmTrigger$.push();
+      search();
+    },
+    defaultFilters: filters,
+    confirm$: confirmTrigger$
   };
 
   const tooltip = useTooltip<DataPoint>();
