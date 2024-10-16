@@ -152,8 +152,9 @@ function getFilterSelectModel(filter: Filter): FilterSelectModel | null {
 export default function FilterForm({ config }: { config: FilterConfig }) {
   const expandGroups = config.expandGroups ?? false;
 
-  const allFilters = resolveTableFilters(config.tableName);
-
+  const [allFilters, setAllFilters] = useState(
+    resolveTableFilters(config.tableName)
+  );
   const [availableFilters, setAvailableFilters] = useState(allFilters);
   const filterOperators = getOperators();
   const booleanOperators = [
@@ -210,18 +211,8 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     if (filterIsActive(filter)) {
       newFilters = filters.filter((f) => f.key !== filter.key);
     } else {
-      newFilters = filters.concat([filter]);
+      newFilters = filters.concat([{ ...filter, confirmed: false }]);
     }
-
-    const available = availableFilters.map((g) => ({
-      ...g,
-      filters: g.filters.map((f) => ({
-        ...f,
-        confirmed: f.key === filter.key ? false : f.confirmed
-      }))
-    }));
-
-    setAvailableFilters(available);
     update(newFilters);
   }
 
@@ -258,6 +249,19 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
   function update(filters: Filter[]) {
     setFilters(filters);
     config.onChange(filters);
+
+    const available = availableFilters.map((g) => ({
+      ...g,
+      filters: g.filters.map((f) => filters.find((f_) => f_.key === f.key) ?? f)
+    }));
+
+    setAvailableFilters(available);
+
+    const all = allFilters.map((g) => ({
+      ...g,
+      filters: g.filters.map((f) => filters.find((f_) => f_.key === f.key) ?? f)
+    }));
+    setAllFilters(all);
   }
 
   function searchFilters(value: string) {
@@ -266,11 +270,20 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
     const groups = allFilters
       .map((g) => ({
         ...g,
-        filters: g.filters.filter(
-          (f) =>
-            f.name.toLowerCase().includes(value) ||
-            f.key.toLowerCase().includes(value)
-        )
+        filters: g.filters
+          .filter(
+            (f) =>
+              f.name.toLowerCase().includes(value) ||
+              f.key.toLowerCase().includes(value)
+          )
+          .map(
+            (f) =>
+              availableFilters
+                .find((g_) =>
+                  g_.filters.some((f_) => f.key === f_.key && !f_.confirmed)
+                )
+                ?.filters.find((f_) => f.key === f_.key && !f_.confirmed) ?? f
+          )
       }))
       .filter((g) => g.filters.length > 0);
     setAvailableFilters(groups);
@@ -364,7 +377,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                           onChange={(evt) =>
                             setFilterOperator(f, evt.target.value)
                           }
-                          defaultValue={f.comparator.operator}
+                          value={f.comparator.operator}
                         >
                           {(f.type === "boolean"
                             ? booleanOperators
@@ -399,7 +412,7 @@ export default function FilterForm({ config }: { config: FilterConfig }) {
                             type={f.type === "number" ? "number" : "text"}
                             disabled={!filterIsActive(f)}
                             className="bg-background border-b border-b-gray-700 p-3 focus:placeholder:text-transparent focus:outline-none w-40 ml-10"
-                            defaultValue={f.comparator.value}
+                            value={f.comparator.value}
                             onChange={(evt) =>
                               setFilterValue(f, evt.target.value)
                             }
