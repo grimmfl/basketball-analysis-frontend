@@ -43,6 +43,16 @@ export const Translations = {
       BETWEEN_16FT_24FT: { name: "16 ft to 24 ft", type: "none" },
       BACK_COURT: { name: "Back cort", type: "none" },
       __name__: { name: "Shot Range", type: "none" }
+    },
+    PlayerPosition: {
+      GUARD: { name: "G", type: "none" },
+      GUARD_FORWARD: { name: "G-F", type: "none" },
+      FORWARD_GUARD: { name: "F-G", type: "none" },
+      FORWARD: { name: "F", type: "none" },
+      FORWARD_CENTER: { name: "F-C", type: "none" },
+      CENTER_FORWARD: { name: "C-F", type: "none" },
+      CENTER: { name: "C", type: "none" },
+      __name__: { name: "Position", type: "none" }
     }
   },
   Statline: {
@@ -87,7 +97,7 @@ export const Translations = {
     last_name: { name: "Last Name", type: "string" },
     current_roster: {
       number: { name: "Number", type: "string" },
-      position: { name: "Position", type: "string" },
+      position: { name: "PlayerPosition", type: "enum" },
       height: { name: "Height", type: "string" },
       weight: { name: "Weight", type: "number" },
       age: { name: "Age", type: "number" },
@@ -206,7 +216,7 @@ export const Translations = {
       last_name: { name: "Last Name", type: "string" },
       current_roster: {
         number: { name: "Number", type: "string" },
-        position: { name: "Position", type: "string" },
+        position: { name: "PlayerPosition", type: "enum" },
         height: { name: "Height", type: "string" },
         weight: { name: "Weight", type: "number" },
         age: { name: "Age", type: "number" },
@@ -416,7 +426,7 @@ export const Translations = {
     roster_id: { name: "Roster", type: "number" },
     player_id: { name: "Player", type: "number" },
     number: { name: "Number", type: "string" },
-    position: { name: "Position", type: "string" },
+    position: { name: "PlayerPosition", type: "enum" },
     height: { name: "Height", type: "string" },
     weight: { name: "Weight", type: "number" },
     age: { name: "Age", type: "number" },
@@ -425,7 +435,7 @@ export const Translations = {
       last_name: { name: "Last Name", type: "string" },
       current_roster: {
         number: { name: "Number", type: "string" },
-        position: { name: "Position", type: "string" },
+        position: { name: "PlayerPosition", type: "enum" },
         height: { name: "Height", type: "string" },
         weight: { name: "Weight", type: "number" },
         age: { name: "Age", type: "number" },
@@ -452,7 +462,7 @@ export const Translations = {
   },
   CurrentRosterPlayer: {
     number: { name: "Number", type: "string" },
-    position: { name: "Position", type: "string" },
+    position: { name: "PlayerPosition", type: "enum" },
     height: { name: "Height", type: "string" },
     weight: { name: "Weight", type: "number" },
     age: { name: "Age", type: "number" },

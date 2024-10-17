@@ -6,7 +6,6 @@ import { getProperty, removeDuplicates, zip } from "@/app/utils";
 import { FilterType, Translations } from "@/app/translations";
 import FilterSelect, { FilterSelectModel } from "@/app/ui/filter/filter-select";
 import { Option } from "@/app/select-options";
-import { Observable } from "@/app/observable";
 import { Trigger } from "@/app/trigger";
 
 export interface FilterConfig {
@@ -128,10 +127,17 @@ function getOperators() {
     else nonValueMembers.push(member);
   }
 
-  return zip(nonValueMembers, valueMembers).map((v) => ({
-    name: v.item1.split(/(?<![A-Z])(?=[A-Z])/).join(" "),
-    value: v.item2
-  }));
+  return zip(nonValueMembers, valueMembers)
+    .map((v) => ({
+      name: v.item1.split(/(?<![A-Z])(?=[A-Z])/).join(" "),
+      value: v.item2
+    }))
+    .filter(
+      (o) =>
+        [ComparatorOperator.IsTrue, ComparatorOperator.IsFalse].indexOf(
+          Number(o.value)
+        ) === -1
+    );
 }
 
 function getFilterSelectModel(filter: Filter): FilterSelectModel | null {

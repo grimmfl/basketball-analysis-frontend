@@ -34,6 +34,16 @@ export enum ShotZoneRange {
   BACK_COURT
 }
 
+export enum PlayerPosition {
+  GUARD,
+  GUARD_FORWARD,
+  FORWARD_GUARD,
+  FORWARD,
+  FORWARD_CENTER,
+  CENTER_FORWARD,
+  CENTER
+}
+
 export class Statline {
   id: number;
   points: number;
@@ -260,7 +270,7 @@ export class RosterPlayerXref {
   roster_id: number;
   player_id: number;
   number: string;
-  position: string;
+  position: number;
   height: string;
   weight: number;
   age: number;
@@ -270,7 +280,7 @@ export class RosterPlayerXref {
     roster_id: number,
     player_id: number,
     number: string,
-    position: string,
+    position: number,
     height: string,
     weight: number,
     age: number,
@@ -302,7 +312,7 @@ export class Team {
 export class CurrentRosterPlayer {
   player_id: number;
   number: string;
-  position: string;
+  position: number;
   height: string;
   weight: number;
   age: number;
@@ -311,7 +321,7 @@ export class CurrentRosterPlayer {
   constructor(
     player_id: number,
     number: string,
-    position: string,
+    position: number,
     height: string,
     weight: number,
     age: number,
